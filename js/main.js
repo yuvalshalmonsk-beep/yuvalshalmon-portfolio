@@ -33,19 +33,48 @@
   items.forEach((el) => io.observe(el));
 })();
 
-// Hero: cycle through the "Shalmon" lettering styles (Figma: After delay 300ms, loop)
+// Frame loops: every [data-cycle] swaps its images every N ms (Figma "After delay").
+// Used by the hero lettering and the Act logo / line / statue loops.
 (function () {
-  const box = document.querySelector('[data-cycle]');
+  const still = matchMedia('(prefers-reduced-motion: reduce)');
+  document.querySelectorAll('[data-cycle]').forEach((box) => {
+    const frames = [...box.querySelectorAll('img')];
+    if (frames.length < 2) return;
+    const delay = +box.dataset.cycle || 300;
+    let i = 0, timer = null;
+    const step = () => { frames[i].classList.remove('is-on'); i = (i + 1) % frames.length; frames[i].classList.add('is-on'); };
+    const start = () => { if (!timer && !still.matches) { frames.forEach((f) => (f.loading = 'eager')); timer = setInterval(step, delay); } };
+    const stop = () => { clearInterval(timer); timer = null; };
+    new IntersectionObserver(([e]) => (e.isIntersecting ? start() : stop())).observe(box);
+  });
+})();
+
+// Act relief carousel: 5 reliefs move one slot left every 1.05s (+0.45s ease)
+(function () {
+  const box = document.querySelector('[data-carousel]');
   if (!box) return;
-  const frames = [...box.querySelectorAll('img')];
-  const still = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const delay = +box.dataset.cycle || 300;
-  let i = 0, timer = null;
-  const step = () => { frames[i].classList.remove('is-on'); i = (i + 1) % frames.length; frames[i].classList.add('is-on'); };
-  const start = () => { if (!timer && !still.matches) timer = setInterval(step, delay); };
+  const items = [...box.querySelectorAll('.relief')];
+  const W = 1551, H = 872; // Figma frame size
+  // slots: off-left, left, centre, right, off-right  (x, y, w, h, opacity)
+  const SLOTS = [[-390, 369, 345, 245, 0], [24, 315, 410, 292, 1], [448, 191, 655, 466, 1], [1117, 315, 410, 292, 1], [1596, 369, 345, 245, 0]];
+  // Figma frame 01: relief 1 centre, 2 right, 3 off-right, 4 off-left, 5 left
+  let pos = [2, 3, 4, 0, 1];
+  const place = (instant) => items.forEach((el, k) => {
+    const [x, y, w, h, o] = SLOTS[pos[k]];
+    el.classList.toggle('no-anim', !!instant);
+    Object.assign(el.style, { left: x / W * 100 + '%', top: y / H * 100 + '%', width: w / W * 100 + '%', height: h / H * 100 + '%', opacity: o });
+  });
+  place(true);
+  const step = () => {
+    pos = pos.map((p) => (p + 4) % 5); // everyone moves one slot to the left; off-left wraps to off-right
+    items.forEach((el, k) => { if (pos[k] === 4) { el.classList.add('no-anim'); } });
+    place(false);
+    items.forEach((el, k) => { if (pos[k] === 4) { const [x, y, w, h] = SLOTS[4]; el.classList.add('no-anim'); Object.assign(el.style, { left: x / W * 100 + '%', top: y / H * 100 + '%', width: w / W * 100 + '%', height: h / H * 100 + '%' }); } });
+  };
+  let timer = null;
+  const start = () => { if (!timer && !matchMedia('(prefers-reduced-motion: reduce)').matches) { items.forEach((i) => (i.loading = 'eager')); timer = setInterval(step, 1500); } };
   const stop = () => { clearInterval(timer); timer = null; };
   new IntersectionObserver(([e]) => (e.isIntersecting ? start() : stop())).observe(box);
-  still.addEventListener('change', () => (still.matches ? stop() : start()));
 })();
 
 // Menu: scrolling down gathers everything into one centred row

@@ -444,3 +444,27 @@ video.tile { display: block; background: #000; }
   .hero__card::before, .hero__card::after { animation: none; }
   .nav__left, .nav .talk, .pill, .nav__home, [data-magnetic] { transition: none; }
 }
+
+/* ==========================================================================
+   Act: moving pieces from the Figma "act- move" section
+   ========================================================================== */
+/* frame-by-frame loops (logo materials, line drawings, statue slideshow) */
+.frames { position: relative; overflow: hidden; }
+.frames img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; visibility: hidden; }
+.frames img.is-on { visibility: visible; }
+.frames--cover { aspect-ratio: 684 / 855 !important; }
+
+/* relief carousel: 5 reliefs rotate through 3 visible slots */
+.relief-row { position: relative; height: calc(872 * var(--u)); overflow: hidden; }
+.relief-carousel { position: absolute; left: calc(-55 * var(--u)); top: 0; width: calc(1551 * var(--u)); height: 100%; }
+.relief {
+  position: absolute; left: 0; top: 0; max-width: none;
+  transition: left .45s cubic-bezier(.42,0,.58,1), top .45s cubic-bezier(.42,0,.58,1),
+              width .45s cubic-bezier(.42,0,.58,1), height .45s cubic-bezier(.42,0,.58,1), opacity .45s cubic-bezier(.42,0,.58,1);
+}
+.relief.no-anim { transition: none; }
+@media (max-width: 760px) {
+  .relief-row { height: 62vw; }
+  .relief-carousel { left: -3.8%; width: 107.7%; }
+}
+@media (prefers-reduced-motion: reduce) { .relief { transition: none; } }
