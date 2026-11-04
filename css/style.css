@@ -6,17 +6,15 @@
    ========================================================================== */
 
 /* Brand fonts.
-   Perfectly Nineties and Degular Display are licensed fonts that aren't on
+   Perfectly Nineties is a licensed font that isn't on
    Google Fonts. If you have the web licences, drop the .woff2 files into
    /fonts and add url(...) after local(...) below. Until then the site uses
-   the closest free fallbacks (Fraunces / Bricolage Grotesque). */
+   the closest free fallback (Fraunces). Display headings use Geist. */
 @font-face { font-family: "Perfectly Nineties"; font-weight: 400; font-style: normal; src: local("Perfectly Nineties"), local("PerfectlyNineties-Regular"); }
 @font-face { font-family: "Perfectly Nineties"; font-weight: 400; font-style: italic; src: local("Perfectly Nineties Italic"), local("PerfectlyNineties-Italic"); }
 @font-face { font-family: "Perfectly Nineties"; font-weight: 600; font-style: normal; src: local("Perfectly Nineties Semibold"), local("PerfectlyNineties-Semibold"); }
 @font-face { font-family: "Perfectly Nineties"; font-weight: 600; font-style: italic; src: local("Perfectly Nineties Semibold Italic"), local("PerfectlyNineties-SemiboldItalic"); }
 @font-face { font-family: "Perfectly Nineties"; font-weight: 700; font-style: italic; src: local("Perfectly Nineties Bold Italic"), local("PerfectlyNineties-BoldItalic"); }
-@font-face { font-family: "Degular Display"; font-weight: 400; src: local("Degular Display"), local("Degular Display Demo"), local("DegularDisplay-Regular"); }
-@font-face { font-family: "Degular Display"; font-weight: 600; src: local("Degular Display Semibold"), local("Degular Display Demo Semibold"), local("DegularDisplay-Semibold"); }
 
 :root {
   --brown: #4d2820;
@@ -27,7 +25,7 @@
   --brown-50: rgba(77, 40, 32, 0.5);
 
   --serif: "Perfectly Nineties", "Fraunces", Georgia, serif;
-  --display: "Degular Display", "Bricolage Grotesque", "Geist", sans-serif;
+  --display: "Geist", "Helvetica Neue", Arial, sans-serif;
   --sans: "Geist", "Helvetica Neue", Arial, sans-serif;
   --mono: "Roboto Mono", ui-monospace, monospace;
   --link: "Instrument Sans", "Geist", sans-serif;
