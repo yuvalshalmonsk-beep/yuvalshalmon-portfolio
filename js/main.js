@@ -48,16 +48,19 @@
   still.addEventListener('change', () => (still.matches ? stop() : start()));
 })();
 
-// Menu: once you scroll, everything gathers into one centred row
-// (and "Let's talk" turns pink). Back at the top it spreads out again.
+// Menu: scrolling down gathers everything into one centred row
+// (and "Let's talk" turns pink). Scrolling up, anywhere on the page,
+// spreads it back out to the sides.
 (function () {
   const nav = document.querySelector('.nav');
   if (!nav) return;
   const left = nav.querySelector('.nav__left');
   const talk = nav.querySelector('.talk');
   if (!left || !talk) return;
-  const OVERLAP = 8; // the talk pill has softer, deeper corners, so it tucks in a bit more to sit flush
-  let compact = false;
+  const OVERLAP = 4; // same -4px overlap as between every pill in the Figma
+  const TOP = 80;    // always spread out near the very top
+  const NUDGE = 6;   // ignore tiny scroll jitters
+  let compact = false, lastY = scrollY, ticking = false;
   const place = () => {
     if (!compact || getComputedStyle(talk).display === 'none') {
       left.style.transform = talk.style.transform = '';
@@ -71,11 +74,16 @@
     left.style.transform = `translateX(${start - left.offsetLeft}px)`;
     talk.style.transform = `translateX(${start + lw - OVERLAP - talk.offsetLeft}px)`;
   };
+  const set = (c) => { if (c !== compact) { compact = c; nav.classList.toggle('is-compact', c); place(); } };
   const update = () => {
-    const c = scrollY > 80;
-    if (c !== compact) { compact = c; nav.classList.toggle('is-compact', c); place(); }
+    const y = scrollY, dy = y - lastY;
+    if (y < TOP) set(false);
+    else if (dy > NUDGE) set(true);    // scrolling down
+    else if (dy < -NUDGE) set(false);  // scrolling up
+    if (Math.abs(dy) > NUDGE || y < TOP) lastY = y;
+    ticking = false;
   };
-  addEventListener('scroll', update, { passive: true });
+  addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, { passive: true });
   addEventListener('resize', place);
   update();
 })();

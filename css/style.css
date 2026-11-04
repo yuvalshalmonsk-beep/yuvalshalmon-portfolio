@@ -66,7 +66,7 @@ h1, h2, h3 { margin: 0; font-weight: inherit; }
   color: var(--brown); white-space: nowrap;
   transition: transform .25s ease;
 }
-.pill + .pill { margin-left: -4px; }
+.pill + .pill, .nav__home + .pill { margin-left: -4px; } /* -4px between every item, as in Figma */
 .pill--md { background-image: url(../assets/svg/pill-md.svg); }
 .pill:hover, .nav__home:hover, .talk:hover { transform: translateY(-2px); }
 .nav__home, .talk { transition: transform .25s ease; }
@@ -408,7 +408,7 @@ video.tile { display: block; background: #000; }
 .talk { position: relative; isolation: isolate; background: none; }
 .talk::before, .talk::after { content: ""; position: absolute; inset: 0; z-index: -1; background: center / 100% 100% no-repeat; transition: opacity .45s ease; }
 .talk::before { background-image: url(../assets/svg/pill-talk.svg); }
-.talk::after  { background-image: url(../assets/svg/pill-talk-pink.svg); opacity: 0; }
+.talk::after  { background-image: url(../assets/svg/pill-md.svg); opacity: 0; } /* same pink shape as the other pills */
 .talk > span { display: inline-block; transition: transform .35s cubic-bezier(.34,1.56,.64,1); }
 .talk:hover > span { transform: translateY(-1px); }
 .nav.is-compact .talk { color: var(--brown); }
