@@ -47,3 +47,56 @@
   new IntersectionObserver(([e]) => (e.isIntersecting ? start() : stop())).observe(box);
   still.addEventListener('change', () => (still.matches ? stop() : start()));
 })();
+
+// Menu: hide while scrolling down, come back on scroll up
+(function () {
+  const nav = document.querySelector('.nav');
+  if (!nav) return;
+  let last = scrollY, ticking = false;
+  const update = () => {
+    const y = scrollY;
+    nav.classList.toggle('is-scrolled', y > 40);
+    if (y > 160 && y > last + 4) nav.classList.add('is-hidden');
+    else if (y < last - 4 || y < 160) nav.classList.remove('is-hidden');
+    last = y; ticking = false;
+  };
+  addEventListener('scroll', () => { if (!ticking) { requestAnimationFrame(update); ticking = true; } }, { passive: true });
+  nav.addEventListener('focusin', () => nav.classList.remove('is-hidden'));
+})();
+
+// Project cards: "View project" sticker that follows the cursor
+(function () {
+  if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  const cards = document.querySelectorAll('.card');
+  if (!cards.length) return;
+  const tag = document.createElement('div');
+  tag.className = 'cursor-tag'; tag.textContent = 'View project'; tag.setAttribute('aria-hidden', 'true');
+  document.body.appendChild(tag);
+  let x = 0, y = 0, tx = 0, ty = 0, raf = null;
+  const loop = () => {
+    x += (tx - x) * 0.22; y += (ty - y) * 0.22;
+    tag.style.left = x + 'px'; tag.style.top = y + 'px';
+    raf = Math.abs(tx - x) + Math.abs(ty - y) > 0.3 ? requestAnimationFrame(loop) : null;
+  };
+  addEventListener('pointermove', (e) => { tx = e.clientX; ty = e.clientY; if (!raf) raf = requestAnimationFrame(loop); }, { passive: true });
+  cards.forEach((c) => {
+    c.addEventListener('pointerenter', (e) => { x = tx = e.clientX; y = ty = e.clientY; loop(); tag.classList.add('is-on'); });
+    c.addEventListener('pointerleave', () => tag.classList.remove('is-on'));
+  });
+})();
+
+// Magnetic buttons: they lean a little toward the cursor
+(function () {
+  if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.querySelectorAll('[data-magnetic]').forEach((el) => {
+    const pull = 0.3, reach = 90;
+    const near = (e) => {
+      const r = el.getBoundingClientRect();
+      const dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2);
+      if (Math.hypot(dx, dy) < reach + r.width / 2) el.style.transform = `translate(${dx * pull}px, ${dy * pull}px)`;
+      else el.style.transform = '';
+    };
+    addEventListener('pointermove', near, { passive: true });
+  });
+})();

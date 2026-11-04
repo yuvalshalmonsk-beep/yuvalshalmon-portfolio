@@ -56,12 +56,12 @@ h1, h2, h3 { margin: 0; font-weight: inherit; }
 }
 .nav__left { display: flex; align-items: center; }
 .nav__home {
-  width: 78px; height: 67px; display: grid; place-items: center;
-  background: url(../assets/svg/nav-home.svg) center / 63px 49px no-repeat;
+  width: 80px; height: 70px; display: grid; place-items: center;
+  background: url(../assets/svg/nav-home.svg) center / 80px 70px no-repeat;
   color: var(--cream);
 }
 .pill {
-  display: inline-flex; align-items: center; height: 28px; padding: 1px 9px 0;
+  display: inline-flex; align-items: center; height: 32px; padding: 1px 13px 0;
   background: url(../assets/svg/pill-sm.svg) center / 100% 100% no-repeat;
   color: var(--brown); white-space: nowrap;
   transition: transform .25s ease;
@@ -71,7 +71,7 @@ h1, h2, h3 { margin: 0; font-weight: inherit; }
 .pill:hover, .nav__home:hover, .talk:hover { transform: translateY(-2px); }
 .nav__home, .talk { transition: transform .25s ease; }
 .talk {
-  display: inline-flex; align-items: center; height: 29px; padding: 1px 12px 0;
+  display: inline-flex; align-items: center; height: 33px; padding: 1px 20px 0;
   background: url(../assets/svg/pill-talk.svg) center / 100% 100% no-repeat;
   color: var(--ink); letter-spacing: 0; white-space: nowrap;
 }
@@ -114,14 +114,14 @@ h1, h2, h3 { margin: 0; font-weight: inherit; }
 .me { padding: 90px 24px 105px; display: flex; flex-direction: column; align-items: center; gap: 67px; }
 .dot { width: 13px; height: 13px; background: var(--pink); }
 .me__text {
-  max-width: 810px; text-align: center; color: var(--ink);
+  max-width: 810px; line-height: 0; text-align: center; color: var(--ink);
   font: 400 45px / 47px var(--serif); letter-spacing: -0.02em;
 }
 
 /* ---------- Home: selected works ---------- */
 .works { background: var(--cream); border-radius: 8px; padding-bottom: 24px; }
 .works__tab { position: relative; height: 61px; overflow: hidden; }
-.works__tab img { position: absolute; left: 12px; right: 12px; top: 2px; width: calc(100% - 24px); height: 63px; }
+.works__tab > img { position: absolute; left: 12px; right: 12px; top: 2px; width: calc(100% - 24px); height: 63px; }
 .works__title {
   position: absolute; left: 38px; top: 22px;
   font: 600 30px / normal var(--serif);
@@ -267,7 +267,7 @@ h1, h2, h3 { margin: 0; font-weight: inherit; }
 
   .works__grid { flex-direction: column; padding: 16px 12px 0; gap: 16px; }
   .works__col { width: 100%; max-width: none; gap: 16px; }
-  .works__tab img { left: 4px; width: calc(100% - 8px); }
+  .works__tab > img { left: 4px; width: calc(100% - 8px); }
   .works__title { left: 24px; font-size: 26px; }
   .card__info { height: auto; min-height: 150px; padding: 12px 14px 14px; }
   .card__year { right: 14px; top: 20px; }
@@ -351,4 +351,86 @@ video.tile { display: block; background: #000; }
   .case-info__name { margin-bottom: 24px; }
   .case-meta { gap: 32px; }
   .case-meta > div:first-child { width: auto; }
+}
+
+/* ==========================================================================
+   Flattened lettering from Figma (vectors instead of live type)
+   ========================================================================== */
+.me__text img { width: calc(796 * var(--u)); height: auto; margin: 0 auto; }
+.works__title { top: 33px; left: 39px; line-height: 0; }
+.works__title img { width: 172px; height: auto; }
+.card__title { line-height: 0; padding-top: 12px; }
+.card__title img { width: auto; }
+.cta__title { line-height: 0; }
+.cta__title img { width: calc(820 * var(--u)); height: auto; }
+.cta .cta__btn { margin-top: calc(60 * var(--u)); }
+.about-cta .cta__title img { width: calc(500 * var(--u)); }
+.footer__name { line-height: 0; }
+.footer__name img { width: 216px; height: auto; }
+@media (max-width: 760px) {
+  .me__text img { width: 100%; }
+  .cta__title img { width: 100%; max-width: 420px; }
+  .about-cta .cta__title img { width: 80%; }
+  .works__title { left: 24px; }
+}
+
+/* ==========================================================================
+   Interactions
+   ========================================================================== */
+
+/* 1. Hero gradient that breathes: two soft colour clouds drift very slowly
+      across the Figma gradient, so the pink never sits still. */
+.hero__card { overflow: hidden; isolation: isolate; }
+.hero__card::before, .hero__card::after {
+  content: ""; position: absolute; inset: -30%; z-index: -1; pointer-events: none;
+  filter: blur(60px); opacity: .75; will-change: transform;
+}
+.hero__card::before { background: radial-gradient(40% 30% at 30% 85%, #ffb0b5 0%, rgba(255,176,181,0) 70%); animation: drift-a 26s ease-in-out infinite alternate; }
+.hero__card::after  { background: radial-gradient(35% 28% at 75% 80%, #ffc3de 0%, rgba(255,195,222,0) 70%); animation: drift-b 32s ease-in-out infinite alternate; }
+@keyframes drift-a { from { transform: translate3d(-6%, 4%, 0) scale(1); } to { transform: translate3d(10%, -6%, 0) scale(1.15); } }
+@keyframes drift-b { from { transform: translate3d(8%, 2%, 0) scale(1.1); } to { transform: translate3d(-10%, -8%, 0) scale(.95); } }
+
+/* 2. Menu: stays with you. Hides while you scroll down to read,
+      slides back the moment you scroll up, on a soft cream glass. */
+.nav { position: fixed; left: 0; right: 0; max-width: 1440px; margin: 0 auto; zoom: var(--z, 1);
+  transition: transform .45s cubic-bezier(.2,.7,.2,1), background-color .3s ease, -webkit-backdrop-filter .3s ease, backdrop-filter .3s ease; }
+.nav.is-scrolled { background: rgba(255, 253, 247, .72); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+.nav.is-hidden { transform: translateY(-110%); }
+
+/* the home blob spins a little; pills hop up one after another on hover */
+.nav__home { transition: transform .5s cubic-bezier(.34,1.56,.64,1); }
+.nav__home:hover { transform: rotate(-14deg) scale(1.06); }
+.pill { transition: transform .35s cubic-bezier(.34,1.56,.64,1), filter .2s ease; transform-origin: 50% 100%; }
+.pill:hover { transform: translateY(-3px) rotate(-3deg); filter: saturate(1.3) brightness(.97); }
+.pill:nth-child(3):hover { transform: translateY(-3px) rotate(3deg); }
+.pill:active, .talk:active, .cta__btn:active, .banner__btn:active { transform: scale(.94); }
+/* "Let's talk" fills with brown from left to right */
+.talk { position: relative; overflow: hidden; isolation: isolate; border-radius: 10px; transition: color .3s ease, transform .25s ease; }
+.talk::before { content: ""; position: absolute; inset: 1px 4px; z-index: -1; background: var(--brown); border-radius: 6px;
+  transform: scaleX(0); transform-origin: left; transition: transform .4s cubic-bezier(.2,.7,.2,1); }
+.talk:hover { color: var(--cream); transform: none; }
+.talk:hover::before { transform: scaleX(1); }
+
+/* 3. Project cards: a "View project" sticker follows the cursor */
+.cursor-tag {
+  position: fixed; left: 0; top: 0; z-index: 50; pointer-events: none;
+  padding: 10px 16px 9px; border-radius: 100px; background: var(--brown); color: var(--cream);
+  font: 400 13px / 1 var(--mono); letter-spacing: .06em; text-transform: uppercase; white-space: nowrap;
+  transform: translate3d(-50%, -50%, 0) scale(0); transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+.cursor-tag.is-on { transform: translate3d(-50%, -50%, 0) scale(1); }
+.card { cursor: none; }
+.card .card__img img { transition: transform 1s cubic-bezier(.2,.7,.2,1); }
+.card .tag { transition: background-color .25s ease, color .25s ease; }
+.card:hover .tag { background: var(--brown); color: var(--sand); }
+
+/* 4. Magnetic buttons: CTA and banner button lean toward the cursor */
+[data-magnetic] { transition: transform .5s cubic-bezier(.2,.7,.2,1); will-change: transform; }
+
+/* Coarse pointers (touch) get no custom cursor */
+@media (hover: none) { .card { cursor: pointer; } .cursor-tag { display: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__card::before, .hero__card::after { animation: none; }
+  .nav, .pill, .nav__home, .talk::before, [data-magnetic] { transition: none; }
 }
