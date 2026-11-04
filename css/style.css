@@ -85,30 +85,27 @@ h1, h2, h3 { margin: 0; font-weight: inherit; }
   background: linear-gradient(180deg, #fffdf7 50%, #ffeaf2 69.471%, #ffc3de 86.426%, #ffb0b5 100%);
 }
 .hero__its {
-  position: absolute; left: 50%; top: calc(54 * var(--u)); transform: translateX(-50%);
-  font: 500 calc(200 * var(--u)) / 1.2 var(--sans); letter-spacing: calc(6 * var(--u));
-  text-transform: uppercase; white-space: nowrap;
+  position: absolute; left: calc(571 * var(--u)); top: calc(119 * var(--u));
+  width: calc(284.29 * var(--u)); height: auto;
 }
-.hero__its span { letter-spacing: calc(20 * var(--u)); }
-.hero__apos {
-  position: absolute; left: calc(736 * var(--u)); top: calc(95 * var(--u));
-  width: calc(17 * var(--u)); height: calc(38 * var(--u)); background: var(--brown);
-}
+/* The six flattened "Shalmon" lettering styles from the Figma "fonts" component.
+   They swap every 300ms, like the prototype's After-delay interaction. */
 .hero__name {
-  position: absolute; left: 50%; top: calc(265 * var(--u)); transform: translateX(-50%);
-  font: italic 400 calc(205 * var(--u)) / .77 var(--serif); letter-spacing: -0.32px;
-  white-space: nowrap;
+  position: absolute; left: calc(284 * var(--u)); top: calc(201 * var(--u));
+  width: calc(872 * var(--u)); height: calc(246 * var(--u));
 }
+.hero__name img { position: absolute; left: 0; top: 0; width: 100%; height: auto; max-width: none; visibility: hidden; }
+.hero__name img.is-on { visibility: visible; }
 .hero__time {
-  position: absolute; left: calc(50% + 1.36 * var(--u)); top: calc(478 * var(--u));
-  width: calc(421.15 * var(--u)); height: auto; transform: translateX(-50%);
+  position: absolute; left: calc(508 * var(--u)); top: calc(499 * var(--u));
+  width: calc(410.15 * var(--u)); height: auto;
 }
 .hero__intro {
-  position: absolute; left: calc(24 * var(--u)); top: calc(329 * var(--u)); width: 267px;
+  position: absolute; left: calc(24 * var(--u)); top: calc(338 * var(--u)); width: 267px;
   font-size: 16px; letter-spacing: -0.02em; line-height: normal;
 }
 .hero__portfolio {
-  position: absolute; right: calc(24 * var(--u)); top: calc(340 * var(--u));
+  position: absolute; right: calc(24 * var(--u)); top: calc(349 * var(--u));
   font: 400 40px / normal var(--sans); letter-spacing: -0.09em; white-space: nowrap;
 }
 .hero__portfolio .serif-i { font-size: 45.5px; letter-spacing: -0.02em; }
@@ -262,7 +259,7 @@ h1, h2, h3 { margin: 0; font-weight: inherit; }
   .hero__meta { position: relative; display: flex; flex-direction: column; gap: 16px; padding: 0 24px; }
   .hero__portfolio { font-size: 32px; }
   .hero__portfolio .serif-i { font-size: 36px; }
-  .hero__its, .hero__apos, .hero__name, .hero__time { margin-top: 80px; }
+  .hero__its, .hero__name, .hero__time { margin-top: 80px; }
   .hero__card { inset: 8px; border-radius: 16px; }
 
   .me { padding: 56px 20px 64px; gap: 40px; }
