@@ -70,7 +70,7 @@
     const navW = nav.clientWidth;
     const lw = left.offsetWidth, tw = talk.offsetWidth;
     const total = lw + tw - OVERLAP;
-    const start = (navW - total) / 2;
+    const start = (navW - total) / 2 - 5; // Figma: the row starts at x=491 on the 1440 frame
     left.style.transform = `translateX(${start - left.offsetLeft}px)`;
     talk.style.transform = `translateX(${start + lw - OVERLAP - talk.offsetLeft}px)`;
   };

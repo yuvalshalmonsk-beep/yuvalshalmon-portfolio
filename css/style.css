@@ -56,26 +56,26 @@ h1, h2, h3 { margin: 0; font-weight: inherit; }
 }
 .nav__left { display: flex; align-items: center; }
 .nav__home {
-  width: 80px; height: 70px; display: grid; place-items: center;
-  background: url(../assets/svg/nav-home.svg) center / 80px 70px no-repeat;
+  width: 79.58px; height: 69.71px; display: grid; place-items: center;
+  background: url(../assets/svg/nav-home.svg) center / 100% 100% no-repeat;
   color: var(--cream);
 }
 .pill {
-  display: inline-flex; align-items: center; height: 32px; padding: 1px 13px 0;
+  display: inline-flex; align-items: center; justify-content: center; width: 71.16px; height: 31.53px; padding: 1px 0 0;
   background: url(../assets/svg/pill-sm.svg) center / 100% 100% no-repeat;
   color: var(--brown); white-space: nowrap;
   transition: transform .25s ease;
 }
-.pill + .pill, .nav__home + .pill { margin-left: -4px; } /* -4px between every item, as in Figma */
-.pill--md { background-image: url(../assets/svg/pill-md.svg); }
+.pill + .pill { margin-left: -4px; } /* -4px between the pills, 0 after the home blob, as in Figma */
+.pill--md { width: 122.18px; background-image: url(../assets/svg/pill-md.svg); }
 .pill:hover, .nav__home:hover, .talk:hover { transform: translateY(-2px); }
 .nav__home, .talk { transition: transform .25s ease; }
 .talk {
-  display: inline-flex; align-items: center; height: 33px; padding: 1px 20px 0;
+  display: inline-flex; align-items: center; justify-content: center; width: 116.18px; height: 31.53px; padding: 1px 0 0;
   background: url(../assets/svg/pill-talk.svg) center / 100% 100% no-repeat;
-  color: var(--ink); letter-spacing: 0; white-space: nowrap;
+  color: var(--brown); white-space: nowrap; /* Figma: brown text, same 4% tracking as the other buttons */
 }
-.nav [aria-current="page"] { text-decoration: underline; text-underline-offset: 3px; }
+.nav [aria-current="page"] { text-decoration: none; }
 
 /* ---------- Home: hero ---------- */
 .hero { position: relative; height: calc(760 * var(--u)); overflow: hidden; }
@@ -408,7 +408,7 @@ video.tile { display: block; background: #000; }
 .talk { position: relative; isolation: isolate; background: none; }
 .talk::before, .talk::after { content: ""; position: absolute; inset: 0; z-index: -1; background: center / 100% 100% no-repeat; transition: opacity .45s ease; }
 .talk::before { background-image: url(../assets/svg/pill-talk.svg); }
-.talk::after  { background-image: url(../assets/svg/pill-md.svg); opacity: 0; } /* same pink shape as the other pills */
+.talk::after  { background-image: url(../assets/svg/pill-talk-pink.svg); opacity: 0; }
 .talk > span { display: inline-block; transition: transform .35s cubic-bezier(.34,1.56,.64,1); }
 .talk:hover > span { transform: translateY(-1px); }
 .nav.is-compact .talk { color: var(--brown); }
