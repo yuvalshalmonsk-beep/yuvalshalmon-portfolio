@@ -48,20 +48,36 @@
   still.addEventListener('change', () => (still.matches ? stop() : start()));
 })();
 
-// Menu: hide while scrolling down, come back on scroll up
+// Menu: once you scroll, everything gathers into one centred row
+// (and "Let's talk" turns pink). Back at the top it spreads out again.
 (function () {
   const nav = document.querySelector('.nav');
   if (!nav) return;
-  let last = scrollY, ticking = false;
-  const update = () => {
-    const y = scrollY;
-    nav.classList.toggle('is-scrolled', y > 40);
-    if (y > 160 && y > last + 4) nav.classList.add('is-hidden');
-    else if (y < last - 4 || y < 160) nav.classList.remove('is-hidden');
-    last = y; ticking = false;
+  const left = nav.querySelector('.nav__left');
+  const talk = nav.querySelector('.talk');
+  if (!left || !talk) return;
+  const OVERLAP = 8; // the talk pill has softer, deeper corners, so it tucks in a bit more to sit flush
+  let compact = false;
+  const place = () => {
+    if (!compact || getComputedStyle(talk).display === 'none') {
+      left.style.transform = talk.style.transform = '';
+      return;
+    }
+    // measure in the nav's own (unzoomed) coordinates
+    const navW = nav.clientWidth;
+    const lw = left.offsetWidth, tw = talk.offsetWidth;
+    const total = lw + tw - OVERLAP;
+    const start = (navW - total) / 2;
+    left.style.transform = `translateX(${start - left.offsetLeft}px)`;
+    talk.style.transform = `translateX(${start + lw - OVERLAP - talk.offsetLeft}px)`;
   };
-  addEventListener('scroll', () => { if (!ticking) { requestAnimationFrame(update); ticking = true; } }, { passive: true });
-  nav.addEventListener('focusin', () => nav.classList.remove('is-hidden'));
+  const update = () => {
+    const c = scrollY > 80;
+    if (c !== compact) { compact = c; nav.classList.toggle('is-compact', c); place(); }
+  };
+  addEventListener('scroll', update, { passive: true });
+  addEventListener('resize', place);
+  update();
 })();
 
 // Project cards: "View project" sticker that follows the cursor

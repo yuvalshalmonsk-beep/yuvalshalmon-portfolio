@@ -390,26 +390,31 @@ video.tile { display: block; background: #000; }
 @keyframes drift-a { from { transform: translate3d(-6%, 4%, 0) scale(1); } to { transform: translate3d(10%, -6%, 0) scale(1.15); } }
 @keyframes drift-b { from { transform: translate3d(8%, 2%, 0) scale(1.1); } to { transform: translate3d(-10%, -8%, 0) scale(.95); } }
 
-/* 2. Menu: stays with you. Hides while you scroll down to read,
-      slides back the moment you scroll up, on a soft cream glass. */
-.nav { position: fixed; left: 0; right: 0; max-width: 1440px; margin: 0 auto; zoom: var(--z, 1);
-  transition: transform .45s cubic-bezier(.2,.7,.2,1), background-color .3s ease, -webkit-backdrop-filter .3s ease, backdrop-filter .3s ease; }
-.nav.is-scrolled { background: rgba(255, 253, 247, .72); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
-.nav.is-hidden { transform: translateY(-110%); }
+/* 2. Menu: on scroll the whole menu gathers into one row in the centre,
+      and "Let's talk" turns into a pink pill like the others.
+      Back at the top it spreads out to the sides again. (JS sets the offsets.) */
+.nav { position: fixed; left: 0; right: 0; max-width: 1440px; margin: 0 auto; zoom: var(--z, 1); }
+.nav__left, .nav .talk { transition: transform .7s cubic-bezier(.65,0,.25,1); will-change: transform; }
 
-/* the home blob spins a little; pills hop up one after another on hover */
+/* the home blob spins a little; pills hop up on hover */
 .nav__home { transition: transform .5s cubic-bezier(.34,1.56,.64,1); }
 .nav__home:hover { transform: rotate(-14deg) scale(1.06); }
-.pill { transition: transform .35s cubic-bezier(.34,1.56,.64,1), filter .2s ease; transform-origin: 50% 100%; }
-.pill:hover { transform: translateY(-3px) rotate(-3deg); filter: saturate(1.3) brightness(.97); }
+.pill { transition: transform .35s cubic-bezier(.34,1.56,.64,1); transform-origin: 50% 100%; }
+.pill:hover { transform: translateY(-3px) rotate(-3deg); }
 .pill:nth-child(3):hover { transform: translateY(-3px) rotate(3deg); }
-.pill:active, .talk:active, .cta__btn:active, .banner__btn:active { transform: scale(.94); }
-/* "Let's talk" fills with brown from left to right */
-.talk { position: relative; overflow: hidden; isolation: isolate; border-radius: 10px; transition: color .3s ease, transform .25s ease; }
-.talk::before { content: ""; position: absolute; inset: 1px 4px; z-index: -1; background: var(--brown); border-radius: 6px;
-  transform: scaleX(0); transform-origin: left; transition: transform .4s cubic-bezier(.2,.7,.2,1); }
-.talk:hover { color: var(--cream); transform: none; }
-.talk:hover::before { transform: scaleX(1); }
+.pill:active, .cta__btn:active, .banner__btn:active { transform: scale(.94); }
+
+/* "Let's talk": outline pill at the top, pink filled pill once the menu gathers */
+.talk { position: relative; isolation: isolate; background: none; }
+.talk::before, .talk::after { content: ""; position: absolute; inset: 0; z-index: -1; background: center / 100% 100% no-repeat; transition: opacity .45s ease; }
+.talk::before { background-image: url(../assets/svg/pill-talk.svg); }
+.talk::after  { background-image: url(../assets/svg/pill-talk-pink.svg); opacity: 0; }
+.talk > span { display: inline-block; transition: transform .35s cubic-bezier(.34,1.56,.64,1); }
+.talk:hover > span { transform: translateY(-1px); }
+.nav.is-compact .talk { color: var(--brown); }
+.nav.is-compact .talk::before { opacity: 0; }
+.nav.is-compact .talk::after { opacity: 1; }
+.pill:hover, .nav__home:hover { filter: none; }
 
 /* 3. Project cards: a "View project" sticker follows the cursor */
 .cursor-tag {
@@ -421,10 +426,15 @@ video.tile { display: block; background: #000; }
 .cursor-tag.is-on { transform: translate3d(-50%, -50%, 0) scale(1); }
 .card { cursor: none; }
 .card .card__img img { transition: transform 1s cubic-bezier(.2,.7,.2,1); }
-.card .tag { transition: background-color .25s ease, color .25s ease; }
-.card:hover .tag { background: var(--brown); color: var(--sand); }
 
-/* 4. Magnetic buttons: CTA and banner button lean toward the cursor */
+/* 4. CTA "Let's talk": turns brown with pink text on hover */
+.cta__btn { position: relative; isolation: isolate; transition: color .3s ease, transform .25s ease; }
+.cta__btn::after { content: ""; position: absolute; inset: 0; z-index: -1; background: url(../assets/svg/pill-cta-dark.svg) center / 100% 100% no-repeat; opacity: 0; transition: opacity .3s ease; }
+.cta__btn:hover { color: var(--pink); transform: none; }
+.cta__btn:hover::after { opacity: 1; }
+.cta__btn--dark:hover { color: var(--pink); }
+
+/* Magnetic: the banner button leans toward the cursor */
 [data-magnetic] { transition: transform .5s cubic-bezier(.2,.7,.2,1); will-change: transform; }
 
 /* Coarse pointers (touch) get no custom cursor */
@@ -432,5 +442,5 @@ video.tile { display: block; background: #000; }
 
 @media (prefers-reduced-motion: reduce) {
   .hero__card::before, .hero__card::after { animation: none; }
-  .nav, .pill, .nav__home, .talk::before, [data-magnetic] { transition: none; }
+  .nav__left, .nav .talk, .pill, .nav__home, [data-magnetic] { transition: none; }
 }
