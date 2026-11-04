@@ -308,3 +308,55 @@ h1, h2, h3 { margin: 0; font-weight: inherit; }
   .about-cta .cta__title { font-size: 56px; }
   .about-cta .footer { position: relative; }
 }
+
+/* ==========================================================================
+   Case-study pages built as real code (Act first)
+   All sizes are Figma px × --u, so the 1440 layout scales evenly.
+   ========================================================================== */
+.case { --gap: calc(24 * var(--u)); --r: calc(8 * var(--u)); background: var(--cream); }
+.case .tile { width: 100%; height: auto; border-radius: var(--r); }
+.row { display: flex; gap: var(--gap); padding: 0 var(--gap); margin-bottom: var(--gap); }
+.row > * { min-width: 0; }
+.row--full { padding: 0; }
+.row--full .tile { border-radius: 0; }
+.row--2 > * { flex: 1 1 0; }
+.row--grid4 { padding: 0 var(--gap) 0 calc(26 * var(--u)); }
+.row--grid4 > .tile { flex: 682 1 0; }
+.row--grid4 .col { flex: 682 1 0; display: flex; flex-direction: column; gap: var(--gap); }
+.row--type { gap: calc(30 * var(--u)); }
+.row--type > :first-child { flex: 507 1 0; }
+.row--type > :last-child { flex: 855 1 0; }
+.stack { position: relative; }
+.stack > .tile { display: block; }
+.overlay { position: absolute; object-fit: cover; display: block; }
+video.tile { display: block; background: #000; }
+
+.case-hero > .tile { border-radius: 0; }
+.case-info {
+  display: flex; justify-content: space-between; gap: 40px;
+  padding: calc(50 * var(--u)) var(--gap) calc(76 * var(--u));
+  color: #212121;
+}
+.case-info__title { width: calc(327 * var(--u)); min-width: 240px; }
+.case-info__num { font: italic 600 14px / 41px var(--serif); color: #b10a0a; height: 33px; }
+.case-info__name { font: italic 600 40px / 41px var(--serif); color: #b10a0a; text-transform: uppercase; margin-bottom: 99px; }
+.case-info__tags { display: flex; flex-wrap: wrap; gap: 3px; max-width: 296px; }
+.case-info__tags .tag { border-color: #212121; color: #212121; }
+.case-info__body { width: calc(684 * var(--u)); min-width: 300px; font: 400 16px / 1.2 var(--link); letter-spacing: -0.02em; }
+.case-label { font: italic 400 14px / 1.16 var(--serif); color: #646464; letter-spacing: -0.02em; margin-bottom: 10px; }
+.case-text p.gap { margin-top: 1.2em; }
+.case-meta { display: flex; gap: 86px; margin-top: 40px; }
+.case-meta > div:first-child { width: 269px; }
+.case-meta .case-label { margin-bottom: 12px; }
+.case-role { font-style: italic; letter-spacing: -0.01em; }
+
+@media (max-width: 760px) {
+  .case { --gap: 12px; --r: 8px; }
+  .row--2, .row--grid4, .row--type { flex-direction: column; padding: 0 12px; }
+  .row--inset { padding: 0 12px; }
+  .case-info { flex-direction: column; padding: 32px 20px 48px; }
+  .case-info__title, .case-info__body { width: 100%; min-width: 0; }
+  .case-info__name { margin-bottom: 24px; }
+  .case-meta { gap: 32px; }
+  .case-meta > div:first-child { width: auto; }
+}
