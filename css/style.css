@@ -101,8 +101,8 @@ h1, h2, h3 { margin: 0; font-weight: inherit; }
   width: calc(410.15 * var(--u)); height: auto;
 }
 .hero__intro {
-  position: absolute; left: calc(24 * var(--u)); top: calc(338 * var(--u)); width: 267px;
-  font-size: 16px; letter-spacing: -0.02em; line-height: normal;
+  position: absolute; left: calc(24 * var(--u)); top: calc(338 * var(--u)); width: 199px; /* Figma box is 193; browser Geist runs ~3% wider */
+  font-size: 14px; letter-spacing: -0.02em; line-height: normal;
 }
 .hero__portfolio {
   position: absolute; right: calc(24 * var(--u)); top: calc(349 * var(--u));
@@ -180,9 +180,9 @@ h1, h2, h3 { margin: 0; font-weight: inherit; }
 .cta__title .bold { display: block; font-size: 1.0556em; line-height: .87; text-transform: lowercase; }
 .cta__title .bold .serif-i { letter-spacing: 0; }
 .cta__btn {
-  margin-top: 12px; height: 43px; padding: 3px 26px 0; display: inline-flex; align-items: center;
+  margin-top: 12px; width: 160px; height: 43px; padding-top: 1px; display: inline-flex; align-items: center; justify-content: center;
   background: url(../assets/svg/pill-cta.svg) center / 100% 100% no-repeat;
-  font: 400 18.47px / 1 var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--brown);
+  font: 600 16px / 1 var(--mono); letter-spacing: 0; text-transform: uppercase; color: var(--brown);
   transition: transform .25s ease;
 }
 .cta__btn--dark { background-image: url(../assets/svg/pill-cta-dark.svg); color: var(--cream); }
@@ -283,7 +283,7 @@ h1, h2, h3 { margin: 0; font-weight: inherit; }
 
   .cta { padding: 72px 20px 80px; }
   .cta__title { font-size: 64px; }
-  .cta__btn { font-size: 15px; height: 38px; }
+  .cta__btn { font-size: 15px; width: 150px; height: 40px; }
 
   .footer { padding: 32px 20px; }
   .footer__name { font-size: 32px; }
