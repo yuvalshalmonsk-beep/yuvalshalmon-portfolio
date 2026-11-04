@@ -15,6 +15,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Instrument+Sans&family=Roboto+Mono&display=swap" rel="stylesheet">
 <link rel="preload" href="/fonts/PerfectlyNinetiesHandwritten-Regular.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/PerfectlyNinetiesHandwritten-Italic.woff2" as="font" type="font/woff2" crossorigin>
+<script>
+/* Figma is drawn at 1440px. On wider screens, scale the whole page up so the
+   24px side margins and every proportion stay exactly as in the design. */
+(function(){var d=document.documentElement;function f(){d.style.setProperty('--z',Math.max(1,d.clientWidth/1440));}f();addEventListener('resize',f);})();
+</script>
 <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
