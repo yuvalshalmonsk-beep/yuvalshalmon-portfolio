@@ -776,3 +776,18 @@ html.gate .gate-screen { display: flex; flex-direction: column; justify-content:
   .mnav__pill[aria-current="page"] { background: var(--brown); border-radius: 0; color: var(--pink);
     -webkit-mask: url(../assets/svg/pill-md.svg) center / 100% 100% no-repeat; mask: url(../assets/svg/pill-md.svg) center / 100% 100% no-repeat; }
 }
+
+/* Phone: project cards from the Figma "דוגמה לחלונית" card (366 wide, 341 tall) */
+@media (max-width: 760px) {
+  .works__grid { padding: calc(12 * var(--m)) calc(12 * var(--m)) 0; gap: calc(12 * var(--m)); }
+  .works__col { gap: calc(12 * var(--m)); }
+  .card, .card__img { border-radius: calc(4.3 * var(--m)); }
+  .card__info { height: calc(126 * var(--m)); min-height: 0; padding: 0; }
+  .card__title { position: absolute; left: calc(8 * var(--m)); top: calc(14 * var(--m)); padding: 0; margin: 0; line-height: 0; }
+  .card__title img { height: calc(22.5 * var(--m)) !important; width: auto; }
+  .card__sub { position: absolute; left: calc(8 * var(--m)); top: calc(47 * var(--m)); margin: 0; font-size: calc(12 * var(--m)); }
+  .card__year { position: absolute; right: calc(10 * var(--m)); top: calc(27 * var(--m)); font-size: calc(8.6 * var(--m)); }
+  .card .tags { position: absolute; left: calc(8 * var(--m)); right: auto; top: calc(80 * var(--m)); bottom: auto; margin: 0; gap: calc(2.5 * var(--m)); align-items: flex-start; }
+  .tags__row { gap: calc(2.5 * var(--m)); flex-wrap: nowrap; }
+  .card .tag { height: calc(17.2 * var(--m)); padding: 0 calc(4.2 * var(--m)); border-width: max(.5px, calc(.42 * var(--m))); font-size: calc(8.4 * var(--m)); letter-spacing: .04em; }
+}
