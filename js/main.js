@@ -171,3 +171,117 @@
   const kick = () => visible.forEach((v) => { if (v.paused) play(v); });
   ['touchend', 'click', 'scroll'].forEach((t) => addEventListener(t, kick, { passive: true }));
 })();
+
+// Post Nature — Plant Profile: leader lines grow out of the screen, then each card appears
+(function () {
+  document.querySelectorAll('[data-pp]').forEach((pp) => {
+    if (!('IntersectionObserver' in window)) { pp.classList.add('is-in'); return; }
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { pp.classList.add('is-in'); io.disconnect(); } }, { threshold: 0.35 });
+    io.observe(pp);
+  });
+})();
+
+// Post Nature — Interface 02: storyboard callouts follow the video's own timeline
+(function () {
+  document.querySelectorAll('[data-sb]').forEach((sb) => {
+    const video = sb.querySelector('video');
+    const cards = [...sb.querySelectorAll('.sb-card')];
+    const groups = [...sb.querySelectorAll('.sb__lines g')];
+    if (!video || !cards.length) return;
+    const spans = cards.map((c) => [+c.dataset.from, +c.dataset.to]);
+    let raf = null;
+    const tick = () => {
+      const t = video.currentTime;
+      spans.forEach(([a, z], i) => {
+        const on = t >= a && t < z;
+        cards[i].classList.toggle('is-on', on);
+        groups[i].classList.toggle('is-on', on);
+      });
+      raf = video.paused ? null : requestAnimationFrame(tick);
+    };
+    const run = () => { if (!raf) raf = requestAnimationFrame(tick); };
+    video.addEventListener('playing', run);
+    video.addEventListener('seeked', run);
+    video.addEventListener('pause', () => { cancelAnimationFrame(raf); raf = null; });
+    if (!video.paused) run();
+  });
+})();
+
+// Post Nature — 10 plants carousel: arrows / click a side card to bring it forward,
+// click the centre card to open it large.
+(function () {
+  const root = document.querySelector('[data-plants]');
+  if (!root) return;
+  const slides = [...root.querySelectorAll('.pc__slide')];
+  const count = root.querySelector('.pc__count b');
+  const N = slides.length;
+  const W = 1440, H = 730;
+  // x, y, w, h, colour, opacity — Figma frame "10 Plants. 7 Stages Each."
+  const DESK = { '-3': [-620, 160, 297, 491, '#efeeea', 0], '-2': [-211, 119, 297, 491, '#efeeea', 1], '-1': [114, 57, 373, 616, '#e4e3df', 1],
+    0: [515, 15, 423, 699, '#cbcbcb', 1], 1: [966, 57, 373, 616, '#e4e3df', 1], 2: [1367, 119, 297, 491, '#efeeea', 1], 3: [1760, 160, 297, 491, '#efeeea', 0] };
+  const MOB = { '-3': [-1400, 260, 700, 1157, '#efeeea', 0], '-2': [-1400, 260, 700, 1157, '#efeeea', 0], '-1': [-560, 200, 700, 1157, '#e4e3df', 1],
+    0: [270, 20, 900, 1487, '#cbcbcb', 1], 1: [1300, 200, 700, 1157, '#e4e3df', 1], 2: [2140, 260, 700, 1157, '#efeeea', 0], 3: [2140, 260, 700, 1157, '#efeeea', 0] };
+  const mob = matchMedia('(max-width: 760px)');
+  let cur = 0;
+  const rel = (i) => { let d = (i - cur) % N; if (d > N / 2) d -= N; if (d < -N / 2) d += N; return d; };
+  const place = () => {
+    const S = mob.matches ? MOB : DESK, h = mob.matches ? 1560 : H;
+    slides.forEach((s, i) => {
+      const d = Math.max(-3, Math.min(3, rel(i)));
+      const prev = s.dataset.d;
+      // a slide wrapping round the back jumps without animating
+      if (prev !== undefined && Math.abs(prev - d) > 2) s.classList.add('no-anim'); else s.classList.remove('no-anim');
+      const [x, y, w, hh, bg, o] = S[d];
+      Object.assign(s.style, { left: x / W * 100 + '%', top: y / h * 100 + '%', width: w / W * 100 + '%', height: hh / h * 100 + '%', opacity: o, zIndex: 10 - Math.abs(d) });
+      s.style.setProperty('--bg', bg);
+      s.dataset.d = d;
+      s.classList.toggle('is-center', d === 0);
+      s.tabIndex = Math.abs(d) <= 1 ? 0 : -1;
+      s.setAttribute('aria-hidden', Math.abs(d) > 2 ? 'true' : 'false');
+      const v = s.querySelector('video'); if (v) { if (Math.abs(d) <= 2) { const p = v.play(); if (p && p.catch) p.catch(() => {}); } else v.pause(); }
+    });
+    if (count) count.textContent = String(cur + 1).padStart(2, '0');
+  };
+  const go = (n) => { cur = (n + N) % N; place(); };
+  root.querySelectorAll('.pc__btn').forEach((b) => b.addEventListener('click', () => go(cur + +b.dataset.dir)));
+  root.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') go(cur + 1); if (e.key === 'ArrowLeft') go(cur - 1); });
+  // swipe on touch screens
+  let sx = null;
+  root.addEventListener('touchstart', (e) => { sx = e.touches[0].clientX; }, { passive: true });
+  root.addEventListener('touchend', (e) => { if (sx === null) return; const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 40) go(cur + (dx < 0 ? 1 : -1)); sx = null; });
+  mob.addEventListener('change', place);
+
+  // lightbox (grows out of the clicked card)
+  const lb = document.querySelector('.pc-lightbox');
+  const box = lb && lb.querySelector('.pc-lightbox__box');
+  let from = null;
+  const open = (s) => {
+    if (!lb) return;
+    box.innerHTML = s.innerHTML;
+    const v = box.querySelector('video'); if (v) { v.muted = true; v.currentTime = (s.querySelector('video') || {}).currentTime || 0; v.play().catch(() => {}); }
+    lb.hidden = false; document.body.classList.add('no-scroll');
+    box.style.transition = 'none'; box.style.transform = 'none';
+    const a = s.getBoundingClientRect(), b = box.getBoundingClientRect();
+    from = s;
+    box.style.transition = 'none';
+    box.style.transform = `translate(${a.left - b.left}px, ${a.top - b.top}px) scale(${a.width / b.width}, ${a.height / b.height})`;
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      box.style.transition = 'transform .6s cubic-bezier(.2,.75,.15,1)'; box.style.transform = 'none'; lb.classList.add('is-open');
+      lb.querySelector('.pc-lightbox__close').focus({ preventScroll: true });
+    }));
+  };
+  const close = () => {
+    if (!lb || lb.hidden) return;
+    const a = from.getBoundingClientRect(), b = box.getBoundingClientRect();
+    box.style.transition = 'transform .45s cubic-bezier(.5,0,.3,1)';
+    box.style.transform = `translate(${a.left - b.left}px, ${a.top - b.top}px) scale(${a.width / b.width}, ${a.height / b.height})`;
+    lb.classList.remove('is-open');
+    setTimeout(() => { lb.hidden = true; box.innerHTML = ''; document.body.classList.remove('no-scroll'); from.focus({ preventScroll: true }); }, 450);
+  };
+  slides.forEach((s, i) => s.addEventListener('click', () => { if (rel(i) === 0) open(s); else go(i); }));
+  if (lb) {
+    lb.addEventListener('click', (e) => { if (e.target === lb || e.target.closest('.pc-lightbox__close')) close(); });
+    addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+  }
+  place();
+})();
