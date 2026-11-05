@@ -8,8 +8,11 @@
 /* Brand font: Perfectly Nineties Handwritten (licensed, files in /fonts).
    Only Regular + Italic exist, so the heavier weights used in the Figma
    (Semibold / Bold) map onto the same files instead of a fake browser bold. */
-@font-face { font-family: "Perfectly Nineties"; font-style: normal; font-weight: 100 900; font-display: swap; src: url(../fonts/PerfectlyNinetiesHandwritten-Regular.woff2) format("woff2"); }
-@font-face { font-family: "Perfectly Nineties"; font-style: italic; font-weight: 100 900; font-display: swap; src: url(../fonts/PerfectlyNinetiesHandwritten-Italic.woff2) format("woff2"); }
+/* Perfectly Nineties (Yuval's licensed font, demo files): regular, semibold, semibold italic, light italic */
+@font-face { font-family: "Perfectly Nineties"; font-style: normal; font-weight: 100 499; font-display: swap; src: url(../fonts/PerfectlyNineties-Regular.woff2) format("woff2"); }
+@font-face { font-family: "Perfectly Nineties"; font-style: normal; font-weight: 500 900; font-display: swap; src: url(../fonts/PerfectlyNineties-Semibold.woff2) format("woff2"); }
+@font-face { font-family: "Perfectly Nineties"; font-style: italic; font-weight: 100 499; font-display: swap; src: url(../fonts/PerfectlyNineties-LightItalic.woff2) format("woff2"); }
+@font-face { font-family: "Perfectly Nineties"; font-style: italic; font-weight: 500 900; font-display: swap; src: url(../fonts/PerfectlyNineties-SemiboldItalic.woff2) format("woff2"); }
 
 :root {
   --brown: #4d2820;
@@ -791,3 +794,5 @@ html.gate .gate-screen { display: flex; flex-direction: column; justify-content:
   .tags__row { gap: calc(2.5 * var(--m)); flex-wrap: nowrap; }
   .card .tag { height: calc(17.2 * var(--m)); padding: 0 calc(4.2 * var(--m)); border-width: max(.5px, calc(.42 * var(--m))); font-size: calc(8.4 * var(--m)); letter-spacing: .04em; }
 }
+
+@media (max-width: 760px) { .works__title { left: calc(12 * var(--m)); } }
