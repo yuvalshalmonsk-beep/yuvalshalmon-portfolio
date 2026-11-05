@@ -622,3 +622,7 @@ body.no-scroll { overflow: hidden; }
 .pc__cur { fill: #73776f; transition: transform .6s cubic-bezier(.65,0,.25,1); }
 .pc__dot { position: absolute; top: -8px; bottom: -8px; padding: 0; border: 0; background: none; cursor: pointer; }
 .pc__dot:hover + .pc__dot, .pc__dot:focus-visible { outline: none; }
+/* cards are exactly the video's shape: no grey frame */
+.pc__slide, .pc__slide video { background: transparent !important; }
+.pc__slide video { object-fit: cover; }
+.pc-lightbox__box { background: transparent; }

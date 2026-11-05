@@ -227,6 +227,9 @@
     0: [515, 15, 423, 699, '#cbcbcb', 1], 1: [966, 57, 373, 616, '#e4e3df', 1], 2: [1367, 119, 297, 491, '#efeeea', 1], 3: [1760, 160, 297, 491, '#efeeea', 0] };
   const MOB = { '-3': [-1400, 260, 700, 1157, '#efeeea', 0], '-2': [-1400, 260, 700, 1157, '#efeeea', 0], '-1': [-560, 200, 700, 1157, '#e4e3df', 1],
     0: [270, 20, 900, 1487, '#cbcbcb', 1], 1: [1300, 200, 700, 1157, '#e4e3df', 1], 2: [2140, 260, 700, 1157, '#efeeea', 0], 3: [2140, 260, 700, 1157, '#efeeea', 0] };
+  // keep every card at the video's real proportions (702×1280), centred on its Figma slot
+  const AR = 702 / 1280;
+  [DESK, MOB].forEach((S) => Object.keys(S).forEach((k) => { const s = S[k]; const w = s[3] * AR; s[0] = s[0] + (s[2] - w) / 2; s[2] = w; }));
   const mob = matchMedia('(max-width: 760px)');
   let cur = 0;
   const rel = (i) => { let d = (i - cur) % N; if (d > N / 2) d -= N; if (d < -N / 2) d += N; return d; };
