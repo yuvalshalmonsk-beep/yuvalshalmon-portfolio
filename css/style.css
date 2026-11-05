@@ -647,3 +647,13 @@ body.no-scroll { overflow: hidden; }
 .pc__slide { box-shadow: 0 18px 40px -14px rgba(31, 36, 33, .10), 0 4px 12px -6px rgba(31, 36, 33, .06); }
 .pc__slide[data-d="-2"], .pc__slide[data-d="2"], .pc__slide[data-d="-3"], .pc__slide[data-d="3"] { box-shadow: 0 12px 28px -14px rgba(31, 36, 33, .06); }
 .pc-lightbox__box video { box-shadow: 0 24px 60px -20px rgba(0, 0, 0, .25); }
+/* lightbox close — Figma "x" button: white on the dark veil, pink fill + brown x on hover */
+.pc-lightbox__close { width: 57px; height: 57px; border: 0; border-radius: 0; padding: 0; background: none; top: 22px; right: 24px; transition: opacity .3s ease .2s, transform .25s ease; }
+.pc-lightbox__close svg { display: block; width: 100%; height: 100%; overflow: visible; }
+.pc-lightbox__close .pc__bg { fill: transparent; stroke: #fff; stroke-width: 1; }
+.pc-lightbox__close .pc__arrow { fill: #fff; }
+.pc-lightbox__close:hover .pc__bg, .pc-lightbox__close:focus-visible .pc__bg { fill: var(--pink); stroke: var(--pink); }
+.pc-lightbox__close:hover .pc__arrow, .pc-lightbox__close:focus-visible .pc__arrow { fill: var(--brown); }
+.pc-lightbox__close:active { transform: scale(.94); }
+.pc-lightbox__close:focus-visible { outline: none; }
+@media (max-width: 760px) { .pc-lightbox__close { width: 44px; height: 44px; top: 14px; right: 14px; } }
