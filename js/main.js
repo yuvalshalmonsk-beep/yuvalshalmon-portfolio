@@ -91,7 +91,7 @@
   const NUDGE = 6;   // ignore tiny scroll jitters
   let compact = false, lastY = scrollY, ticking = false;
   const place = () => {
-    if (!compact || getComputedStyle(talk).display === 'none') {
+    if (!compact || getComputedStyle(talk).display === 'none' || innerWidth <= 760) {
       left.style.transform = talk.style.transform = '';
       return;
     }

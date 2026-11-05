@@ -689,3 +689,43 @@ html.gate .gate-screen { display: flex; flex-direction: column; justify-content:
 .gate-screen__title em { font-style: italic; }
 .gate-screen__text { margin: 0; font: 400 15px / 1.4 var(--sans); color: rgba(77,40,32,.8); max-width: 300px; }
 .gate-screen__mail { align-self: flex-start; margin-top: 8px; padding: 9px 14px 8px; border: 1px solid var(--brown); border-radius: 96px; font: 400 13px / 1 var(--mono); letter-spacing: .02em; color: var(--brown); text-decoration: none; }
+
+/* ================= Phone layout (Figma "Home — Mobile", 390 frame) =================
+   1 Figma px = 100vw / 390 */
+.me__m { display: none; }
+@media (max-width: 760px) {
+  :root { --m: calc(100vw / 390); }
+
+  /* menu: home blob on the left, all four pills in one pink row on the right */
+  .nav { padding: calc(12 * var(--m)) calc(12.3 * var(--m)) 0 calc(8 * var(--m)); align-items: flex-start; justify-content: flex-start; font-size: calc(9.7 * var(--m)); letter-spacing: .04em; }
+  .nav__left { flex: 1; align-items: flex-start; }
+  .nav__home { width: calc(55.4 * var(--m)); height: calc(48.5 * var(--m)); background-size: 100% 100%; margin-right: auto; }
+  .nav .pill, .nav .talk { height: calc(21.9 * var(--m)); margin-top: calc(13.3 * var(--m)); padding: 1px 0 0; }
+  .nav .pill { width: calc(49.5 * var(--m)); }
+  .nav .pill + .pill { margin-left: calc(-2.8 * var(--m)); }
+  .nav .pill--md { width: calc(85 * var(--m)); }
+  .nav .talk { display: inline-flex; width: calc(80.9 * var(--m)); margin-left: calc(-2.7 * var(--m)); }
+  .nav .talk::before { opacity: 0; }
+  .nav .talk::after { opacity: 1; background-image: url(../assets/svg/pill-md.svg); }
+  .nav__left, .nav .talk { transform: none !important; }
+
+  /* hero */
+  .hero { height: calc(708 * var(--m)); padding: 0; }
+  .hero__card { inset: auto; left: 0; right: 0; top: calc(-68 * var(--m)); height: calc(776 * var(--m)); border-radius: 0 0 calc(6.5 * var(--m)) calc(6.5 * var(--m)); }
+  .hero__its, .hero__name, .hero__time { margin-top: 0; }
+  .hero__its { left: calc(116.6 * var(--m)); top: calc(183 * var(--m)); width: calc(149.2 * var(--m)); }
+  .hero__name { left: calc(-34 * var(--m)); top: calc(226 * var(--m)); width: calc(457.7 * var(--m)); height: calc(129.1 * var(--m)); }
+  .hero__time { left: calc(83.6 * var(--m)); top: calc(382.5 * var(--m)); width: calc(215.3 * var(--m)); }
+  .hero__meta { position: static; display: block; padding: 0; }
+  .hero__portfolio { position: absolute; left: 0; right: 0; top: calc(89 * var(--m)); text-align: center; font-size: calc(23.6 * var(--m)); color: var(--brown); }
+  .hero__portfolio .serif-i { font-size: calc(26.8 * var(--m)); }
+  .hero__intro { position: absolute; left: calc(37 * var(--m)); top: calc(549 * var(--m)); width: calc(316 * var(--m)); margin: 0; text-align: center; font-size: calc(15.2 * var(--m)); line-height: 1.32; letter-spacing: -0.01em; color: var(--brown); }
+  .hero__intro br { display: none; }
+
+  /* "I'm Yuval Shalmon…" statement, live text instead of the desktop lettering */
+  .me { padding: calc(37 * var(--m)) calc(12 * var(--m)) calc(40 * var(--m)); gap: calc(30 * var(--m)); }
+  .dot { width: calc(10 * var(--m)); height: calc(10 * var(--m)); }
+  .me__text { max-width: none; width: calc(276 * var(--m)); line-height: 0; }
+  .me__text > img { display: none; }
+  .me__m { display: block; font: 400 calc(40.9 * var(--m)) / calc(38.6 * var(--m)) var(--serif); letter-spacing: -0.02em; color: var(--brown); text-align: center; }
+}
