@@ -479,3 +479,6 @@ video.tile { display: block; background: #000; }
 .stack.clip { overflow: hidden; border-radius: var(--r); }
 .row--full .stack.clip { border-radius: 0; }
 @media (max-width: 760px) { .case--pn .row { margin-top: 12px !important; } }
+.card__img { position: relative; }
+.card__video { position: absolute; left: 0; width: 100%; object-fit: cover; pointer-events: none; transition: transform 1s cubic-bezier(.2,.7,.2,1); }
+.card:hover .card__video { transform: scale(1.035); }
