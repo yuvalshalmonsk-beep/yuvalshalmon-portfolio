@@ -796,3 +796,25 @@ html.gate .gate-screen { display: flex; flex-direction: column; justify-content:
 }
 
 @media (max-width: 760px) { .works__title { left: calc(12 * var(--m)); } }
+/* Phone cards — updated Figma sample (366 x 387, no year, bigger tags) */
+@media (max-width: 760px) {
+  .card__info { height: calc(172 * var(--m)); }
+  .card__title { left: calc(9 * var(--m)); top: calc(19 * var(--m)); }
+  .card__sub { left: calc(9 * var(--m)); top: calc(58 * var(--m)); font-size: calc(14 * var(--m)); }
+  .card__year { display: none; }
+  .card .tags { left: calc(8 * var(--m)); top: calc(108 * var(--m)); gap: calc(3.7 * var(--m)); }
+  .tags__row { gap: calc(3.7 * var(--m)); }
+  .card .tag { height: calc(25.2 * var(--m)); padding: 0 calc(6.1 * var(--m)); border-width: max(.5px, calc(.61 * var(--m))); font-size: calc(12.24 * var(--m)); }
+}
+@media (max-width: 760px) {
+  /* every card uses the sample's image shape (366 x 215) */
+  .card__img { aspect-ratio: 366 / 215; }
+  .card__img > img { width: 100%; height: 100%; object-fit: cover; }
+  .card__img .card__video { left: 0 !important; top: 0 !important; width: 100% !important; height: 100% !important; object-fit: cover !important; }
+  .card .tags { right: calc(8 * var(--m)); flex-direction: row; flex-wrap: wrap; }
+  .tags__row { display: contents; }
+}
+@media (max-width: 760px) {
+  .card[href*="post-nature"] .card__video { object-position: 50% 30%; }
+  .card[href*="panorays"] .card__img > img { object-position: 50% 25%; }
+}
