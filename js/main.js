@@ -214,6 +214,9 @@
   if (!root) return;
   const slides = [...root.querySelectorAll('.pc__slide')];
   const count = root.querySelector('.pc__count b');
+  const name = root.querySelector('.pc__name');
+  let inView = false;
+  new IntersectionObserver(([e]) => { inView = e.isIntersecting; place(); }, { rootMargin: '150px 0px' }).observe(root);
   const N = slides.length;
   const W = 1440, H = 730;
   // x, y, w, h, colour, opacity — Figma frame "10 Plants. 7 Stages Each."
@@ -238,9 +241,11 @@
       s.classList.toggle('is-center', d === 0);
       s.tabIndex = Math.abs(d) <= 1 ? 0 : -1;
       s.setAttribute('aria-hidden', Math.abs(d) > 2 ? 'true' : 'false');
-      const v = s.querySelector('video'); if (v) { if (Math.abs(d) <= 2) { const p = v.play(); if (p && p.catch) p.catch(() => {}); } else v.pause(); }
+      const v = s.querySelector('video');
+      if (v) { if (inView && Math.abs(d) <= 1) { v.preload = 'auto'; const p = v.play(); if (p && p.catch) p.catch(() => {}); } else v.pause(); }
     });
     if (count) count.textContent = String(cur + 1).padStart(2, '0');
+    if (name) name.textContent = slides[cur].dataset.name || '';
   };
   const go = (n) => { cur = (n + N) % N; place(); };
   root.querySelectorAll('.pc__btn').forEach((b) => b.addEventListener('click', () => go(cur + +b.dataset.dir)));
@@ -257,8 +262,17 @@
   let from = null;
   const open = (s) => {
     if (!lb) return;
-    box.innerHTML = s.innerHTML;
-    const v = box.querySelector('video'); if (v) { v.muted = true; v.currentTime = (s.querySelector('video') || {}).currentTime || 0; v.play().catch(() => {}); }
+    const src = s.querySelector('video');
+    box.innerHTML = '';
+    if (src) {
+      const v = document.createElement('video');
+      Object.assign(v, { src: src.currentSrc || src.src, poster: src.poster, muted: true, loop: true, playsInline: true, autoplay: true });
+      v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
+      v.addEventListener('loadedmetadata', () => { try { v.currentTime = src.currentTime || 0; } catch (e) {} }, { once: true });
+      box.appendChild(v); v.play().catch(() => {});
+      src.pause();
+    }
+    const cap = document.createElement('p'); cap.className = 'pc-lightbox__name'; cap.textContent = s.dataset.name || ''; box.appendChild(cap);
     lb.hidden = false; document.body.classList.add('no-scroll');
     box.style.transition = 'none'; box.style.transform = 'none';
     const a = s.getBoundingClientRect(), b = box.getBoundingClientRect();
@@ -276,7 +290,7 @@
     box.style.transition = 'transform .45s cubic-bezier(.5,0,.3,1)';
     box.style.transform = `translate(${a.left - b.left}px, ${a.top - b.top}px) scale(${a.width / b.width}, ${a.height / b.height})`;
     lb.classList.remove('is-open');
-    setTimeout(() => { lb.hidden = true; box.innerHTML = ''; document.body.classList.remove('no-scroll'); from.focus({ preventScroll: true }); }, 450);
+    setTimeout(() => { lb.hidden = true; box.innerHTML = ''; document.body.classList.remove('no-scroll'); from.focus({ preventScroll: true }); place(); }, 450);
   };
   slides.forEach((s, i) => s.addEventListener('click', () => { if (rel(i) === 0) open(s); else go(i); }));
   if (lb) {
