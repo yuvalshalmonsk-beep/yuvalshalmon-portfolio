@@ -264,6 +264,39 @@
   root.addEventListener('touchend', (e) => { if (sx === null) return; const dx = e.changedTouches[0].clientX - sx; if (Math.abs(dx) > 40) go(cur + (dx < 0 ? 1 : -1)); sx = null; });
   mob.addEventListener('change', place);
 
+  // lightbox controls: play/pause + a timeline you can click or drag to skip through the stages
+  const fmt = (s) => { s = Math.max(0, Math.floor(s || 0)); return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0'); };
+  const scrubber = (v, host) => {
+    const bar = document.createElement('div'); bar.className = 'pc-ctl';
+    bar.innerHTML = '<button class="pc-ctl__play" type="button" aria-label="Pause"><svg viewBox="0 0 16 16" aria-hidden="true"><path class="i-pause" d="M4 3h3v10H4zM9 3h3v10H9z"/><path class="i-play" d="M4.5 2.5l9 5.5-9 5.5z"/></svg></button>' +
+      '<div class="pc-ctl__track" role="slider" tabindex="0" aria-label="Video position" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="pc-ctl__fill"></div><div class="pc-ctl__knob"></div></div>' +
+      '<span class="pc-ctl__time">0:00 / 0:00</span>';
+    host.appendChild(bar);
+    const btn = bar.querySelector('.pc-ctl__play'), track = bar.querySelector('.pc-ctl__track');
+    const fill = bar.querySelector('.pc-ctl__fill'), knob = bar.querySelector('.pc-ctl__knob'), time = bar.querySelector('.pc-ctl__time');
+    let dragging = false, raf = null;
+    const draw = () => {
+      const d = v.duration || 0, p = d ? v.currentTime / d : 0;
+      fill.style.width = p * 100 + '%'; knob.style.left = p * 100 + '%';
+      time.textContent = fmt(v.currentTime) + ' / ' + fmt(d);
+      track.setAttribute('aria-valuenow', Math.round(p * 100));
+      raf = host.isConnected ? requestAnimationFrame(draw) : null;
+    };
+    raf = requestAnimationFrame(draw);
+    const sync = () => { bar.classList.toggle('is-paused', v.paused); btn.setAttribute('aria-label', v.paused ? 'Play' : 'Pause'); };
+    v.addEventListener('play', sync); v.addEventListener('pause', sync); sync();
+    btn.addEventListener('click', () => (v.paused ? v.play().catch(() => {}) : v.pause()));
+    const seekTo = (e) => { const r = track.getBoundingClientRect(); const p = Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)); if (v.duration) v.currentTime = p * v.duration; };
+    track.addEventListener('pointerdown', (e) => { dragging = true; track.setPointerCapture(e.pointerId); bar.classList.add('is-drag'); seekTo(e); });
+    track.addEventListener('pointermove', (e) => { if (dragging) seekTo(e); });
+    const end = () => { dragging = false; bar.classList.remove('is-drag'); };
+    track.addEventListener('pointerup', end); track.addEventListener('pointercancel', end);
+    track.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') { e.preventDefault(); e.stopPropagation(); v.currentTime = Math.min(v.duration || 0, Math.max(0, v.currentTime + (e.key === 'ArrowRight' ? 5 : -5))); }
+      if (e.key === ' ') { e.preventDefault(); btn.click(); }
+    });
+  };
+
   // lightbox (grows out of the clicked card)
   const lb = document.querySelector('.pc-lightbox');
   const box = lb && lb.querySelector('.pc-lightbox__box');
@@ -281,6 +314,7 @@
       src.pause();
     }
     const cap = document.createElement('p'); cap.className = 'pc-lightbox__name'; cap.textContent = s.dataset.name || ''; box.appendChild(cap);
+    const v = box.querySelector('video'); if (v) scrubber(v, box);
     lb.hidden = false; document.body.classList.add('no-scroll');
     box.style.transition = 'none'; box.style.transform = 'none';
     const a = s.getBoundingClientRect(), b = box.getBoundingClientRect();

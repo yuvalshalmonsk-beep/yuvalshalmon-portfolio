@@ -626,3 +626,19 @@ body.no-scroll { overflow: hidden; }
 .pc__slide, .pc__slide video { background: transparent !important; }
 .pc__slide video { object-fit: cover; }
 .pc-lightbox__box { background: transparent; }
+/* lightbox: room under the video for the name + timeline */
+.pc-lightbox__box { height: min(76vh, 960px); margin-bottom: 70px; }
+.pc-lightbox__name { bottom: auto; top: -38px; }
+.pc-ctl { position: absolute; left: 0; right: 0; bottom: -52px; display: flex; align-items: center; gap: 14px; color: var(--cream); }
+.pc-ctl__play { flex: none; width: 34px; height: 34px; border-radius: 50%; border: 1px solid rgba(255,253,247,.6); background: transparent; color: var(--cream); display: grid; place-items: center; cursor: pointer; padding: 0; transition: background .25s ease, color .25s ease, border-color .25s ease; }
+.pc-ctl__play:hover, .pc-ctl__play:focus-visible { background: var(--pink); border-color: var(--pink); color: var(--brown); outline: none; }
+.pc-ctl__play svg { width: 12px; height: 12px; fill: currentColor; }
+.pc-ctl .i-play { display: none; }
+.pc-ctl.is-paused .i-play { display: inline; }
+.pc-ctl.is-paused .i-pause { display: none; }
+.pc-ctl__track { position: relative; flex: 1; height: 22px; cursor: pointer; touch-action: none; outline: none; }
+.pc-ctl__track::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 2px; margin-top: -1px; background: rgba(255,253,247,.28); border-radius: 2px; }
+.pc-ctl__fill { position: absolute; left: 0; top: 50%; height: 2px; margin-top: -1px; background: var(--pink); border-radius: 2px; }
+.pc-ctl__knob { position: absolute; top: 50%; width: 12px; height: 12px; margin: -6px 0 0 -6px; border-radius: 50%; background: var(--pink); transition: transform .2s ease; }
+.pc-ctl__track:hover .pc-ctl__knob, .pc-ctl.is-drag .pc-ctl__knob, .pc-ctl__track:focus-visible .pc-ctl__knob { transform: scale(1.35); }
+.pc-ctl__time { flex: none; font: 400 12px / 1 var(--mono); letter-spacing: .04em; color: rgba(255,253,247,.75); min-width: 84px; text-align: right; }
