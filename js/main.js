@@ -215,6 +215,9 @@
   const slides = [...root.querySelectorAll('.pc__slide')];
   const count = root.querySelector('.pc__count b');
   const name = root.querySelector('.pc__name');
+  const curDot = root.querySelector('.pc__cur');
+  const dots = [...root.querySelectorAll('.pc__dot')];
+  dots.forEach((d) => d.addEventListener('click', () => go(+d.dataset.i)));
   let inView = false;
   new IntersectionObserver(([e]) => { inView = e.isIntersecting; place(); }, { rootMargin: '150px 0px' }).observe(root);
   const N = slides.length;
@@ -246,6 +249,8 @@
     });
     if (count) count.textContent = String(cur + 1).padStart(2, '0');
     if (name) name.textContent = slides[cur].dataset.name || '';
+    if (curDot) curDot.style.transform = `translateX(${cur * 17}px)`;
+    dots.forEach((d, i) => d.setAttribute('aria-selected', i === cur ? 'true' : 'false'));
   };
   const go = (n) => { cur = (n + N) % N; place(); };
   root.querySelectorAll('.pc__btn').forEach((b) => b.addEventListener('click', () => go(cur + +b.dataset.dir)));
