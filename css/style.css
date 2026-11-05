@@ -846,3 +846,8 @@ html.gate .gate-screen { display: flex; flex-direction: column; justify-content:
   .menu-open .mnav__list li:nth-child(4) .mnav__pill { transition-delay: .12s; }
   .menu-open .mnav__list li:nth-child(5) .mnav__pill { transition-delay: .17s; }
 }
+/* card titles are live text now (same size on every card) */
+.card__title { padding-top: 0; margin: 0; position: absolute; left: 15px; top: 17px; font: 600 28px / 1 var(--serif); letter-spacing: -0.01em; color: var(--brown); text-transform: none; }
+@media (max-width: 760px) {
+  .card__title { left: calc(9 * var(--m)); top: calc(18 * var(--m)); font-size: calc(30 * var(--m)); line-height: 1; }
+}
