@@ -153,3 +153,21 @@
     addEventListener('pointermove', near, { passive: true });
   });
 })();
+
+// Videos: mobile browsers often ignore the autoplay attribute (iPhone in
+// Low Power Mode, data saver, videos that start off-screen). Start every
+// muted loop from code as soon as it comes into view, pause it when it
+// leaves, and if the phone still refuses, start them on the first touch.
+(function () {
+  const vids = [...document.querySelectorAll('video[autoplay]')];
+  if (!vids.length) return;
+  const visible = new Set();
+  const play = (v) => { v.muted = true; const p = v.play(); if (p && p.catch) p.catch(() => {}); };
+  const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+    if (e.isIntersecting) { visible.add(e.target); play(e.target); }
+    else { visible.delete(e.target); e.target.pause(); }
+  }), { rootMargin: '200px 0px' });
+  vids.forEach((v) => { v.muted = true; v.playsInline = true; io.observe(v); });
+  const kick = () => visible.forEach((v) => { if (v.paused) play(v); });
+  ['touchend', 'click', 'scroll'].forEach((t) => addEventListener(t, kick, { passive: true }));
+})();

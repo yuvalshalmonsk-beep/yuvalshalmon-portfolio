@@ -482,3 +482,7 @@ video.tile { display: block; background: #000; }
 .card__img { position: relative; }
 .card__video { position: absolute; left: 0; width: 100%; object-fit: cover; pointer-events: none; transition: transform 1s cubic-bezier(.2,.7,.2,1); }
 .card:hover .card__video { transform: scale(1.035); }
+
+/* Videos are decoration: never show the iPhone's big play button over them */
+video::-webkit-media-controls-start-playback-button { display: none !important; -webkit-appearance: none; }
+video::-webkit-media-controls { display: none !important; }
