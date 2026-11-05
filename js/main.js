@@ -341,3 +341,32 @@
   }
   place();
 })();
+
+// Email link: "mailto:" does nothing on computers without a mail app set up
+// (most people use Gmail in the browser). On a computer, clicking copies the
+// address and says so; on a phone it still opens the mail app (and copies too).
+(function () {
+  const links = document.querySelectorAll('a[href^="mailto:"]');
+  if (!links.length) return;
+  const desktop = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const copy = (text) => {
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
+    const t = document.createElement('textarea'); t.value = text; t.style.cssText = 'position:fixed;opacity:0';
+    document.body.appendChild(t); t.select(); try { document.execCommand('copy'); } catch (e) {} t.remove();
+    return Promise.resolve();
+  };
+  links.forEach((a) => {
+    const addr = a.href.replace('mailto:', '').split('?')[0];
+    a.title = addr;
+    a.addEventListener('click', (e) => {
+      if (desktop) e.preventDefault();
+      copy(addr).then(() => {
+        let tip = a.querySelector('.copied');
+        if (!tip) { tip = document.createElement('span'); tip.className = 'copied'; tip.setAttribute('role', 'status'); a.appendChild(tip); }
+        tip.textContent = 'Email copied ✓';
+        tip.classList.add('is-on');
+        clearTimeout(a._t); a._t = setTimeout(() => tip.classList.remove('is-on'), 2200);
+      }).catch(() => { if (desktop) location.href = a.href; });
+    });
+  });
+})();
