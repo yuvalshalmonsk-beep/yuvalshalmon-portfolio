@@ -46,7 +46,22 @@ if(!p&&matchMedia('(max-width: 760px)').matches)d.classList.add('gate');})();
     <a class="pill pill--md" href="#playground">Playground</a>
   </div>
   <a class="talk" href="#contact"><span>Let’s talk</span></a>
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mnav"><span class="menu-btn__open">menu</span><span class="menu-btn__close">close</span></button>
 </nav>
+<div class="mnav" id="mnav" aria-label="Menu" hidden>
+  <ul class="mnav__list">
+    <li><a class="mnav__pill" href="/">home</a></li>
+    <li><a class="mnav__pill" href="/#works" aria-current="page">works</a></li>
+    <li><a class="mnav__pill" href="/about/">about</a></li>
+    <li><a class="mnav__pill" href="#playground">playground</a></li>
+    <li><a class="mnav__pill mnav__pill--talk" href="#contact">let’s talk</a></li>
+  </ul>
+  <div class="mnav__foot">
+    <a href="mailto:yuvalshalmon.sk@gmail.com">Email</a>
+    <a href="https://www.linkedin.com/in/yuval-shalmon" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="https://www.instagram.com/yuval_shalmon/" target="_blank" rel="noopener">Instagram</a>
+  </div>
+</div>
 <div class="page">
 <main class="case case--act">
 <section class="case-hero">

@@ -370,3 +370,20 @@
     });
   });
 })();
+
+// Phone menu: the "menu" pill opens a panel with the rest of the links
+(function () {
+  const btn = document.querySelector('.menu-btn');
+  const panel = document.getElementById('mnav');
+  if (!btn || !panel) return;
+  const root = document.documentElement;
+  const setOpen = (open) => {
+    if (open) { panel.hidden = false; requestAnimationFrame(() => root.classList.add('menu-open')); }
+    else { root.classList.remove('menu-open'); setTimeout(() => { if (!root.classList.contains('menu-open')) panel.hidden = true; }, 380); }
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  };
+  btn.addEventListener('click', () => setOpen(!root.classList.contains('menu-open')));
+  panel.addEventListener('click', (e) => { if (e.target.closest('a')) setOpen(false); });
+  addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
+  matchMedia('(min-width: 761px)').addEventListener('change', (e) => { if (e.matches) setOpen(false); });
+})();
