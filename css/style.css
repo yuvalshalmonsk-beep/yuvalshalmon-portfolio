@@ -822,3 +822,6 @@ html.gate .gate-screen { display: flex; flex-direction: column; justify-content:
   .card__sub { font-size: calc(16 * var(--m)); }
   .card[href*="panorays"] .card__img > img { object-position: 50% 8%; }
 }
+.case--cut .stack.cut { position: relative; line-height: 0; }
+.case--cut .stack.cut > .tile { display: block; width: 100%; height: auto; border-radius: 0; }
+@media (max-width: 760px) { .pn-head { min-height: 0 !important; } }
