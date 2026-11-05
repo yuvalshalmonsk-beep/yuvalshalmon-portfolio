@@ -384,6 +384,8 @@
   };
   btn.addEventListener('click', () => setOpen(!root.classList.contains('menu-open')));
   panel.addEventListener('click', (e) => { if (e.target.closest('a')) setOpen(false); });
+  document.addEventListener('click', (e) => { if (root.classList.contains('menu-open') && !e.target.closest('.mnav, .menu-btn')) setOpen(false); });
+  addEventListener('scroll', () => { if (root.classList.contains('menu-open')) setOpen(false); }, { passive: true });
   addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
   matchMedia('(min-width: 761px)').addEventListener('change', (e) => { if (e.matches) setOpen(false); });
 })();

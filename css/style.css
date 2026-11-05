@@ -825,3 +825,24 @@ html.gate .gate-screen { display: flex; flex-direction: column; justify-content:
 .case--cut .stack.cut { position: relative; line-height: 0; }
 .case--cut .stack.cut > .tile { display: block; width: 100%; height: auto; border-radius: 0; }
 @media (max-width: 760px) { .pn-head { min-height: 0 !important; } }
+
+/* Phone menu v2: a small dropdown under "menu" (outline cream pills, right aligned) */
+@media (max-width: 760px) {
+  .nav__home { width: calc(66 * var(--m)); height: calc(58 * var(--m)); font-size: calc(11.5 * var(--m)); }
+  .menu-btn { width: calc(84 * var(--m)); height: calc(36 * var(--m)); margin-top: calc(11 * var(--m)); font-size: calc(15 * var(--m)); }
+  .mnav { inset: auto; top: calc(58 * var(--m)); right: calc(12.3 * var(--m)); left: auto; bottom: auto; padding: 0; background: none;
+    justify-content: flex-start; align-items: flex-end; gap: 0; z-index: 21; }
+  .mnav__list { align-items: flex-end; gap: calc(9 * var(--m)); }
+  .mnav__list li + li { margin-top: 0; }
+  .mnav__list li:first-child { display: none; }            /* "home" already has its own button */
+  .mnav__pill { width: auto; height: calc(41 * var(--m)); padding: 2px calc(18 * var(--m)) 0; background: url(../assets/svg/pill-outline-cream.svg) center / 100% 100% no-repeat;
+    font-size: calc(17 * var(--m)); transform: translateY(calc(-10 * var(--m))); --r: 0deg; filter: drop-shadow(0 6px 14px rgba(77,40,32,.08)); }
+  .mnav__pill--talk { background-image: url(../assets/svg/pill-outline-cream.svg); }
+  .mnav__pill[aria-current="page"] { -webkit-mask: none; mask: none; background: url(../assets/svg/pill-md.svg) center / 100% 100% no-repeat; color: var(--brown); }
+  .mnav__foot { display: none; }
+  html.menu-open, html.menu-open body { overflow: auto; }
+  .menu-open .mnav__list li:nth-child(2) .mnav__pill { transition-delay: .02s; }
+  .menu-open .mnav__list li:nth-child(3) .mnav__pill { transition-delay: .07s; }
+  .menu-open .mnav__list li:nth-child(4) .mnav__pill { transition-delay: .12s; }
+  .menu-open .mnav__list li:nth-child(5) .mnav__pill { transition-delay: .17s; }
+}
