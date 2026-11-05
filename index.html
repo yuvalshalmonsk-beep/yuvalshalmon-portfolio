@@ -22,9 +22,22 @@
    24px side margins and every proportion stay exactly as in the design. */
 (function(){var d=document.documentElement;function f(){d.style.setProperty('--z',Math.max(1,d.clientWidth/1440));}f();addEventListener('resize',f);})();
 </script>
+<script>
+/* Phones: the mobile layout is still being designed, so show a short note instead.
+   Add ?preview to the address once to see the real site on a phone (and ?preview=off to undo). */
+(function(){var d=document.documentElement,k='ys-preview',q=location.search,p=false;
+try{if(/[?&]preview=off/.test(q))localStorage.removeItem(k);else if(/[?&]preview/.test(q))localStorage.setItem(k,'1');p=localStorage.getItem(k)==='1';}catch(e){p=/[?&]preview(?!=off)/.test(q);}
+if(!p&&matchMedia('(max-width: 760px)').matches)d.classList.add('gate');})();
+</script>
 <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
+<div class="gate-screen" role="dialog" aria-label="Mobile version coming soon">
+  <img class="gate-screen__name" src="/assets/svg/footer-name.svg" alt="Yuval Shalmon">
+  <p class="gate-screen__title">The mobile version<br>is <em>on its way.</em></p>
+  <p class="gate-screen__text">For now, please visit on a computer to see the full portfolio.</p>
+  <a class="gate-screen__mail" href="mailto:yuvalshalmon.sk@gmail.com">yuvalshalmon.sk@gmail.com</a>
+</div>
 <nav class="nav" aria-label="Main">
   <div class="nav__left">
     <a class="nav__home" href="/" aria-current="page">home</a>
