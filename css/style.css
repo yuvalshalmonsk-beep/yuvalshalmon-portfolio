@@ -818,3 +818,7 @@ html.gate .gate-screen { display: flex; flex-direction: column; justify-content:
   .card[href*="post-nature"] .card__video { object-position: 50% 30%; }
   .card[href*="panorays"] .card__img > img { object-position: 50% 25%; }
 }
+@media (max-width: 760px) {
+  .card__sub { font-size: calc(16 * var(--m)); }
+  .card[href*="panorays"] .card__img > img { object-position: 50% 8%; }
+}
