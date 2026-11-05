@@ -674,3 +674,7 @@ body.no-scroll { overflow: hidden; }
 .copied { position: absolute; left: 0; bottom: calc(100% + 6px); padding: 7px 12px 6px; border-radius: 96px; background: #1e1e1e; color: #fffdf7; font: 400 14px / 1.1 var(--sans); white-space: nowrap; pointer-events: none; opacity: 0; transform: translateY(4px); transition: opacity .2s, transform .2s; }
 .copied.is-on { opacity: 1; transform: none; }
 .footer__col a .copied:hover { text-decoration: none; }
+/* videos over slice-built project pages */
+.project__stack { position: relative; }
+.pv { position: absolute; overflow: hidden; border-radius: calc(8 * var(--u)); pointer-events: none; }
+.pv video { position: absolute; object-fit: cover; display: block; }
