@@ -334,7 +334,7 @@ video.tile { display: block; background: #000; }
 .case-info__name { font: italic 600 40px / 41px var(--serif); color: #b10a0a; text-transform: uppercase; margin-bottom: 99px; }
 .case-info__tags { display: flex; flex-wrap: wrap; gap: 3px; max-width: 296px; }
 .case-info__tags .tag { border-color: #212121; color: #212121; }
-.case-info__body { width: calc(684 * var(--u)); min-width: 300px; font: 400 16px / 1.2 var(--link); letter-spacing: -0.02em; }
+.case-info__body { width: calc(684 * var(--u)); min-width: 300px; font: 400 16px / 1.36 var(--sans); letter-spacing: 0; }
 .case-label { font: italic 400 14px / 1.16 var(--serif); color: #646464; letter-spacing: -0.02em; margin-bottom: 10px; }
 .case-text p.gap { margin-top: 1.2em; }
 .case-meta { display: flex; gap: 86px; margin-top: 40px; }
