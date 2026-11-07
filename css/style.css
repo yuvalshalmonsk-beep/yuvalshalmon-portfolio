@@ -868,3 +868,4 @@ html.gate .gate-screen { display: flex; flex-direction: column; justify-content:
   .footer__copy { font-size: calc(11 * var(--m)); }
 }
 .footer__col a, .footer__col span { font-family: var(--sans); }
+@media (max-width: 760px) { .cta .cta__btn { width: auto; height: calc(36 * var(--m)); padding: 2px calc(18 * var(--m)) 0; font-size: calc(15 * var(--m)); letter-spacing: .04em; } }
