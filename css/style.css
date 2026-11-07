@@ -904,3 +904,38 @@ html.gate .gate-screen { display: flex; flex-direction: column; justify-content:
   .endzone .footer__name img { width: calc(215.7 * var(--m)); }
   .endzone .footer__copy { font-size: calc(12 * var(--m)); line-height: calc(22 * var(--m)); }
 }
+
+/* Phone: About page from the Figma "About — Mobile" frame (390 wide) */
+@media (max-width: 760px) {
+  .about-hero { padding: calc(81.5 * var(--m)) calc(12 * var(--m)) 0; }
+  .about-hero h1 { padding: calc(16 * var(--m)) 0; margin: 0; font-size: calc(56 * var(--m)); line-height: calc(43.3 * var(--m)); letter-spacing: -0.02em; white-space: normal; }
+  .about-row { display: grid; grid-template-columns: 1fr 1fr; gap: calc(10 * var(--m)); padding: calc(141 * var(--m)) 0 0; align-items: start; }
+  .about-row > img { width: 100%; height: auto; aspect-ratio: 178 / 237.3; border-radius: calc(5.2 * var(--m)); }
+  .panel { border: 0; }
+  .panel--about { grid-column: 1 / -1; width: auto; height: auto; padding: calc(17.9 * var(--m)); border-radius: calc(6 * var(--m)); }
+  .panel--about h2 { font: 700 calc(22.4 * var(--m)) / normal var(--serif); margin: 0 0 calc(14.2 * var(--m)); }
+  .panel--about p { font: 400 calc(12 * var(--m)) / 1.3 var(--sans); letter-spacing: -0.02em; margin: 0 0 1.3em; }
+  .panel--about p.lead { font: 400 calc(18 * var(--m)) / 1.3 var(--serif); letter-spacing: 0; margin-bottom: calc(14 * var(--m)); }
+  .about-side { grid-column: 1 / -1; width: auto; display: grid; grid-template-columns: 1fr 1fr; gap: calc(10 * var(--m)); align-items: start; }
+  .panel--small { padding: calc(14.6 * var(--m)); border-radius: calc(4.9 * var(--m)); font-size: calc(12 * var(--m)); line-height: 1.25; letter-spacing: -0.02em; }
+  .panel--small h3 { font: italic 700 calc(20 * var(--m)) / 1.2 var(--serif); letter-spacing: -0.02em; margin: 0 0 calc(2 * var(--m)); }
+  .panel--small p { margin: 0; }
+  .panel--small .muted { margin-bottom: calc(14 * var(--m)); }
+  .panel--small .muted:last-child { margin-bottom: 0; }
+
+  /* the end block on About uses the same gradient CTA + footer as the other pages */
+  .about-cta { height: auto; overflow: visible; margin-top: calc(10 * var(--m)); background: linear-gradient(180deg, #fffdf7 calc(-37 * var(--m)), #ffeaf2 calc(266 * var(--m)), #ffc3de calc(532 * var(--m)), #ffb0b5 calc(743 * var(--m))); }
+  .about-cta__bg { display: none; }
+  .about-cta .cta { padding: calc(77 * var(--m)) calc(12 * var(--m)) 0; }
+  .about-cta .cta__title img { width: calc(365.6 * var(--m)); }
+  .about-cta .cta .cta__btn { margin-top: calc(32 * var(--m)); background-image: url(../assets/svg/pill-md.svg); color: var(--brown); }
+  .about-cta .footer { position: relative; padding: calc(118.5 * var(--m)) calc(12 * var(--m)) calc(22 * var(--m)); }
+  .about-cta .footer__cols { grid-template-columns: calc(141 * var(--m)) auto; row-gap: calc(26 * var(--m)); }
+  .about-cta .footer__col { gap: 0; }
+  .about-cta .footer__col h3 { line-height: calc(27 * var(--m)); margin: 0; }
+  .about-cta .footer__col a, .about-cta .footer__col span { padding: calc(8 * var(--m)) calc(8 * var(--m)) calc(6 * var(--m)) 0; line-height: calc(18 * var(--m)); }
+  .about-cta .footer__brand { margin-top: calc(26 * var(--m)); gap: calc(20 * var(--m)); }
+  .about-cta .footer__copy { font-size: calc(12 * var(--m)); line-height: calc(22 * var(--m)); }
+}
+.m-br { display: none; }
+@media (max-width: 760px) { .m-br { display: inline; } .about-row { padding-top: calc(135 * var(--m)); } }
