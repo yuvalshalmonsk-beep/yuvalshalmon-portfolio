@@ -851,3 +851,20 @@ html.gate .gate-screen { display: flex; flex-direction: column; justify-content:
 @media (max-width: 760px) {
   .card__title { left: calc(9 * var(--m)); top: calc(18 * var(--m)); font-size: calc(30 * var(--m)); line-height: 1; }
 }
+
+/* Phone: CTA + footer from the Figma mobile frame (390 x 976) */
+@media (max-width: 760px) {
+  .cta { padding: calc(266 * var(--m)) calc(12 * var(--m)) 0; }
+  .cta__title img, .about-cta .cta__title img { width: calc(366 * var(--m)); max-width: none; }
+  .cta .cta__btn { margin-top: calc(30 * var(--m)); width: calc(121 * var(--m)); height: calc(33 * var(--m)); font-size: calc(12 * var(--m));
+    background-image: url(../assets/svg/pill-md.svg); color: var(--brown); }
+  .footer, .about-cta .footer { display: flex; flex-direction: column; align-items: flex-start; gap: 0; padding: calc(160 * var(--m)) calc(12 * var(--m)) calc(30 * var(--m)); }
+  .footer__cols { order: 1; display: grid; grid-template-columns: calc(140 * var(--m)) auto; column-gap: 0; row-gap: calc(28 * var(--m)); }
+  .footer__col { gap: calc(6 * var(--m)); }
+  .footer__col h3 { padding-left: 0; font-size: calc(24 * var(--m)); margin-bottom: calc(2 * var(--m)); }
+  .footer__col a, .footer__col span { padding: 0; font-size: calc(16 * var(--m)); line-height: calc(26 * var(--m)); }
+  .footer__brand { order: 2; margin-top: calc(40 * var(--m)); gap: calc(26 * var(--m)); }
+  .footer__name img { width: calc(216 * var(--m)); }
+  .footer__copy { font-size: calc(11 * var(--m)); }
+}
+.footer__col a, .footer__col span { font-family: var(--sans); }
