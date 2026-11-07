@@ -1008,3 +1008,15 @@ html.gate .gate-screen { display: flex; flex-direction: column; justify-content:
   .sb-mhead h3 { margin: 0 0 calc(10 * var(--m)); font: italic 600 calc(24 * var(--m)) / 1.1 var(--serif); color: var(--brown); }
   .sb-mhead p { margin: 0; font: 400 calc(15 * var(--m)) / 1.2 var(--sans); letter-spacing: -0.02em; color: #212121; }
 }
+/* rebuilt flattened pages (Kanopy / Panorays): real tile rows */
+.case--cut .row { margin-bottom: 0; }
+.case--cut .row--tiles { padding: 0 var(--pr) 0 var(--pl); gap: var(--g); }
+.case--cut .row--tiles > .stack { min-width: 0; }
+.case--cut .row--tiles .tile { display: block; width: 100%; height: auto; border-radius: var(--r); }
+.case--cut .row--crop .tile--flat { display: block; width: 100%; height: auto; border-radius: 0; }
+@media (max-width: 760px) {
+  .case--cut .row--tiles { padding: 0 var(--gap); gap: var(--gap); margin: 0 0 var(--gap) !important; }
+  .case--cut .row--tiles > .stack { flex: none !important; width: 100%; }
+  .case--cut .row--crop { padding: 0; margin: 0 0 var(--gap) !important; }
+  .case--cut .row--crop .tile--flat { border-radius: 0; }
+}
