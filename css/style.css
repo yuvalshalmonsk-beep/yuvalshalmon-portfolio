@@ -888,3 +888,19 @@ html.gate .gate-screen { display: flex; flex-direction: column; justify-content:
   .mnav__foot p { margin: 0; font: 400 calc(11 * var(--m)) / 1 var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--brown); }
   html.menu-open, html.menu-open body { overflow: hidden; }
 }
+
+/* Phone: CTA + footer share one gradient block (Figma "חדש", 390 x 743) */
+@media (max-width: 760px) {
+  .endzone { background: linear-gradient(180deg, #fffdf7 calc(-37 * var(--m)), #ffeaf2 calc(266 * var(--m)), #ffc3de calc(532 * var(--m)), #ffb0b5 calc(743 * var(--m))); }
+  .endzone .cta { padding: calc(77 * var(--m)) calc(12 * var(--m)) 0; background: none; }
+  .endzone .cta__title img { width: calc(365.6 * var(--m)); }
+  .endzone .cta .cta__btn { margin-top: calc(32 * var(--m)); }
+  .endzone .footer { padding: calc(118.5 * var(--m)) calc(12 * var(--m)) calc(22 * var(--m)); background: none; }
+  .endzone .footer__cols { grid-template-columns: calc(141 * var(--m)) auto; row-gap: calc(26 * var(--m)); padding-left: calc(1 * var(--m)); }
+  .endzone .footer__col { gap: 0; }
+  .endzone .footer__col h3 { font-size: calc(24 * var(--m)); line-height: calc(27 * var(--m)); margin: 0; }
+  .endzone .footer__col a, .endzone .footer__col span { padding: calc(8 * var(--m)) calc(8 * var(--m)) calc(6 * var(--m)) 0; font-size: calc(16 * var(--m)); line-height: calc(18 * var(--m)); }
+  .endzone .footer__brand { margin-top: calc(26 * var(--m)); gap: calc(20 * var(--m)); padding-left: calc(1 * var(--m)); }
+  .endzone .footer__name img { width: calc(215.7 * var(--m)); }
+  .endzone .footer__copy { font-size: calc(12 * var(--m)); line-height: calc(22 * var(--m)); }
+}
