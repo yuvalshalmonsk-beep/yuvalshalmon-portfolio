@@ -944,3 +944,13 @@ html.gate .gate-screen { display: flex; flex-direction: column; justify-content:
   .endzone, .about-cta { background: linear-gradient(180deg, #fffdf7 0, #fffdf7 calc(365 * var(--m)), #ffeaf2 calc(480 * var(--m)), #ffc3de calc(640 * var(--m)), #ffb0b5 calc(743 * var(--m)));
     border-radius: 0 0 calc(6 * var(--m)) calc(6 * var(--m)); }
 }
+/* Phone About: running text 14, headings scaled by the same ratio (x1.167) */
+@media (max-width: 760px) {
+  .panel--about h2 { font-size: calc(26 * var(--m)); margin-bottom: calc(16 * var(--m)); }
+  .panel--about p { font-size: calc(14 * var(--m)); }
+  .panel--about p.lead { font-size: calc(21 * var(--m)); margin-bottom: calc(16 * var(--m)); }
+  .panel--about { padding: calc(20 * var(--m)); }
+  .panel--small { font-size: calc(14 * var(--m)); padding: calc(16 * var(--m)); }
+  .panel--small h3 { font-size: calc(23.3 * var(--m)); }
+}
+@media (max-width: 760px) { .panel--about p:last-child { margin-bottom: 0; } }
