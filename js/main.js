@@ -93,7 +93,8 @@
   const NUDGE = 6;   // ignore tiny scroll jitters
   let compact = false, lastY = scrollY, ticking = false;
   const place = () => {
-    if (!compact || getComputedStyle(talk).display === 'none' || innerWidth <= 760) {
+    const GATHER = false; // menu stays put at the sides; scrolling only turns "Let's talk" pink
+    if (!GATHER || !compact || getComputedStyle(talk).display === 'none' || innerWidth <= 760) {
       left.style.transform = talk.style.transform = '';
       return;
     }

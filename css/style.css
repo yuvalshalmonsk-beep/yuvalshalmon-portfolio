@@ -1115,6 +1115,6 @@ html.gate .gate-screen { display: flex; flex-direction: column; justify-content:
 }
 /* desktop menu 8% smaller (side margins kept at 16/24px) */
 @media (min-width: 761px) {
-  .nav:not(.nav--glass) { zoom: calc(var(--z, 1) * .92); padding-left: calc(16px / .92); padding-right: calc(24px / .92); }
+  .nav:not(.nav--glass) { zoom: calc(var(--z, 1) * .92); max-width: calc(1440px / .92); padding-left: calc(16px / .92); padding-right: calc(24px / .92); }
 }
 @media (min-width: 761px) { .nav:not(.nav--glass) .talk > span { position: relative; top: -1px; } }
