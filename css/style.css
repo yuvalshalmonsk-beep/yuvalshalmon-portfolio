@@ -1104,3 +1104,12 @@ html.gate .gate-screen { display: flex; flex-direction: column; justify-content:
 @media (min-width: 761px) {
   .nav--glass.is-compact .talk { margin-left: 0; padding-left: calc(1.375px * var(--k)); }
 }
+/* glass menu v5: exactly the Figma frame — pills 71.16 / 122.18 / 116.18 wide (shape stretched to the box) with -4px auto-layout gap, so each tip runs over the next */
+@media (min-width: 761px) {
+  .nav--glass .nav__home, .nav--glass .nav__left .pill { width: calc(71.16px * var(--k)); }
+  .nav--glass .nav__left .pill--md { width: calc(122.18px * var(--k)); }
+  .nav--glass .talk > span { width: calc(116.18px * var(--k)); -webkit-mask-image: url(../assets/svg/pill-md.svg); mask-image: url(../assets/svg/pill-md.svg); }
+  .nav--glass .nav__left > * + *, .nav--glass .nav__left .pill + .pill { margin-left: calc(-4px * var(--k)); }
+  .nav--glass.is-compact .talk { margin-left: 0; padding-left: 0; }
+  .nav--glass.is-compact .talk > span { margin-left: calc(-4px * var(--k)); }
+}
