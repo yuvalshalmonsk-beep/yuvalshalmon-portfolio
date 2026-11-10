@@ -1218,3 +1218,87 @@ html.gate .gate-screen { display: flex; flex-direction: column; justify-content:
   .pn-cap img { height: calc(20 * var(--m)); max-width: 100%; }
   .pn-cap--research img { width: auto !important; height: calc(20 * .79 * var(--m)); margin-top: calc(2 * var(--m)); }
 }
+
+/* ================= Phone QA round 2 ================= */
+@media (max-width: 760px) {
+  /* Act reliefs + 10-plant carousel run to the screen edges */
+  .case .relief-row { margin-left: calc(-1 * var(--gap)) !important; margin-right: calc(-1 * var(--gap)) !important; border-radius: 0; }
+  .case .relief-carousel { left: calc(-130 * var(--m)); }
+  .case .pc__track { margin: 0 calc(-1 * var(--gap)); border-radius: 0; }
+  /* paragraph -> image now the same air as image -> next heading (56 + 12) */
+  .case .pn-head, .sb-mhead { padding-bottom: calc(56 * var(--m)); }
+  .pp__intro { margin-bottom: calc(56 * var(--m)); }
+  .pc-intro { padding-bottom: calc(56 * var(--m)) !important; }
+  /* Post Nature opening: a calm first screen, the logo in its middle, then 03 */
+  .case--pn .case-hero > .tile { margin-top: calc(175 * var(--m)); margin-bottom: calc(105 * var(--m)); }
+  /* both research captions at the "Research Mapping" size */
+  .pn-cap img { height: calc(20 * .79 * var(--m)) !important; width: auto !important; margin-top: calc(2 * var(--m)); }
+}
+/* plant profile screen wrapper (desktop keeps the Figma position via inline style) */
+.pp__screen .pp__video { width: 100%; height: 100%; }
+.ppm-dot, .ppm-card, .ppm-line, .ppm-target { display: none; }
+@media (max-width: 760px) {
+  /* Post Nature plant profile on the phone: tap points along the screen; each opens its card below, with a line to the exact spot */
+  .pp { position: relative; }
+  .pp > .pp__screen { position: relative; left: auto !important; top: auto !important; width: 72% !important; height: auto !important; aspect-ratio: 393 / 648; }
+  .pp__screen .pp__video { width: 100% !important; aspect-ratio: auto; }
+  .ppm-dot { display: block; position: absolute; z-index: 4; width: 30px; height: 30px; margin: -15px 0 0; padding: 0; border: 0; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+  .ppm-dot--l { left: -15px; } .ppm-dot--r { right: -15px; }
+  .ppm-dot span { position: absolute; left: 50%; top: 50%; width: 9px; height: 9px; margin: -4.5px; border-radius: 50%; background: #1f2421; box-shadow: 0 0 0 0 rgba(31,36,33,.35); transition: transform .3s cubic-bezier(.3,1.6,.5,1), background .3s ease; animation: ppm-pulse 2.4s ease-out infinite; }
+  .ppm-dot:nth-of-type(2) span { animation-delay: .3s; } .ppm-dot:nth-of-type(3) span { animation-delay: .6s; } .ppm-dot:nth-of-type(4) span { animation-delay: .9s; }
+  .ppm-dot:nth-of-type(5) span { animation-delay: 1.2s; } .ppm-dot:nth-of-type(6) span { animation-delay: 1.5s; } .ppm-dot:nth-of-type(7) span { animation-delay: 1.8s; }
+  .ppm-dot.is-on span { transform: scale(1.35); background: var(--brown); animation: none; box-shadow: 0 0 0 4px rgba(77,40,32,.14); }
+  .ppm-target { display: block; position: absolute; z-index: 4; width: 8px; height: 8px; margin: -4px; border-radius: 50%; background: #1f2421; box-shadow: 0 0 0 3px rgba(255,253,247,.85); pointer-events: none; transform: scale(0); transition: transform .3s cubic-bezier(.3,1.6,.5,1) .45s; }
+  .pp.ppm-on .ppm-target { transform: scale(1); }
+  .ppm-card { display: block; position: relative; z-index: 2; box-sizing: border-box; width: calc(250 * var(--m)); margin: calc(28 * var(--m)) auto 0; padding: calc(13 * var(--m)) calc(13 * var(--m)) calc(14 * var(--m));
+    border: .7px solid #ebebeb; background: linear-gradient(135deg, rgba(242,242,242,.75), rgba(225,225,225,.75)); opacity: 0; transform: translateY(6px); }
+  .pp.ppm-on .ppm-card { opacity: 1; transform: none; transition: opacity .35s ease .25s, transform .45s cubic-bezier(.2,.7,.2,1) .25s; }
+  .ppm-card img { display: block; height: auto; }
+  .ppm-card p { margin: calc(8 * var(--m)) 0 0; font: 400 calc(12.5 * var(--m)) / 1.3 var(--sans); color: #494949; }
+  .ppm-line { display: block; position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; z-index: 3; }
+  .ppm-line polyline { fill: none; stroke: #bebebe; stroke-width: 1; stroke-dasharray: 900; stroke-dashoffset: 900; }
+  .pp.ppm-on .ppm-line polyline { stroke-dashoffset: 0; transition: stroke-dashoffset .6s cubic-bezier(.45,0,.2,1); }
+}
+@keyframes ppm-pulse { 0% { box-shadow: 0 0 0 0 rgba(31,36,33,.35); } 70%, 100% { box-shadow: 0 0 0 9px rgba(31,36,33,0); } }
+@media (prefers-reduced-motion: reduce) { .ppm-dot span { animation: none; } }
+/* Post Nature user flow, rebuilt for the phone */
+@media (max-width: 760px) {
+  .flow-m { width: 100%; display: flex; flex-direction: column; align-items: stretch; --ink: #1f2421; --mint: #a8fed3; --red: #e2563f; color: var(--ink); }
+  .flow-m__cap { margin: 0 0 calc(6 * var(--m)); font: 400 calc(17 * var(--m)) / 1.15 var(--serif); color: var(--ink); }
+  .flow-m__cap i { font-style: italic; }
+  .fl-h { margin: calc(30 * var(--m)) 0 calc(12 * var(--m)); font: 400 calc(15 * var(--m)) / 1.2 var(--serif); color: var(--ink); }
+  .fl-node { background: #000; color: #fff; text-align: center; padding: calc(10 * var(--m)) calc(12 * var(--m)) calc(9 * var(--m)); font: 400 calc(16 * var(--m)) / 1.1 var(--serif); }
+  .fl-node b { font-weight: 400; margin-right: .25em; }
+  .fl-box { border: 1px solid var(--ink); background: transparent; text-align: center; padding: calc(9 * var(--m)) calc(12 * var(--m)); font: 400 calc(13 * var(--m)) / 1.25 var(--sans); }
+  .fl-box--dash { border: 1px dashed #5b6070; color: #5b6070; }
+  .fl-box--sm { display: inline-block; padding: calc(7 * var(--m)) calc(22 * var(--m)); }
+  .fl-q { background: #d9d9d9; border-radius: calc(16 * var(--m)); text-align: center; padding: calc(11 * var(--m)) calc(16 * var(--m)); font: 400 calc(13 * var(--m)) / 1.3 var(--sans); }
+  .fl-warn { border: 1px solid var(--red); color: var(--red); text-align: center; padding: calc(9 * var(--m)) calc(14 * var(--m)); font: 400 calc(13 * var(--m)) / 1.3 var(--sans); }
+  .fl-warn span { display: block; }
+  .fl-pill { display: inline-flex; align-items: center; justify-content: center; min-width: calc(120 * var(--m)); height: calc(30 * var(--m)); padding: 0 calc(16 * var(--m)); border-radius: 99px; background: var(--mint); font: 400 calc(13 * var(--m)) / 1 var(--sans); white-space: nowrap; }
+  .fl-row { display: flex; align-items: center; gap: calc(12 * var(--m)); }
+  .fl-row--c { justify-content: center; }
+  .fl-note { margin: calc(8 * var(--m)) 0 0; font: 400 calc(12 * var(--m)) / 1.3 var(--sans); color: #888680; }
+  .fl-note--c { text-align: center; }
+  .fl-note--dash { margin-top: calc(14 * var(--m)); padding-top: calc(10 * var(--m)); border-top: 1px dashed #9a9ca6; }
+  .fl-next { font: 400 calc(12 * var(--m)) / 1.2 var(--sans); color: #888680; }
+  .fl-text { margin: calc(8 * var(--m)) 0 0; font: 400 calc(13 * var(--m)) / 1.3 var(--sans); }
+  /* arrows: a thin line with a small head, centred (or under the "Yes" column in a branch) */
+  .fl-a { display: block; position: relative; height: calc(18 * var(--m)); width: 1px; margin: 0 auto; background: var(--ink); }
+  .fl-a::after { content: ""; position: absolute; left: -3px; bottom: 0; width: 5px; height: 5px; border-right: 1px solid var(--ink); border-bottom: 1px solid var(--ink); transform: rotate(45deg); transform-origin: 75% 75%; }
+  .fl-step { margin-top: calc(18 * var(--m)); }
+  .fl-step + .fl-step { margin-top: calc(26 * var(--m)); }
+  .fl-yn { display: grid; grid-template-columns: 1fr 1fr; gap: calc(12 * var(--m)); }
+  .fl-yn .fl-pill { width: 100%; min-width: 0; }
+  .fl-no { display: flex; flex-direction: column; align-items: center; gap: calc(5 * var(--m)); }
+  .fl-skip { font: 400 calc(11 * var(--m)) / 1.2 var(--sans); color: #6b6f7a; border-top: 1px dashed #9a9ca6; padding-top: calc(4 * var(--m)); }
+  .fl-skip::before { content: "↳ "; }
+  .fl-branch { width: calc(50% - 6 * var(--m)); margin-top: calc(-17 * var(--m)); }
+  .fl-branch > .fl-a:first-child { height: calc(22 * var(--m)); }
+  .fl-branch .fl-box, .fl-branch .fl-warn { width: calc(342 * var(--m)); max-width: none; box-sizing: border-box; }
+  .fl-branch .fl-a { margin-left: calc(50% - .5px); }
+  .fl-branch .fl-row { width: calc(342 * var(--m)); }
+}
+@media (max-width: 760px) {
+  .fl-branch .fl-box, .fl-branch .fl-warn, .fl-branch .fl-row { width: calc(200% + 12 * var(--m)); }
+}

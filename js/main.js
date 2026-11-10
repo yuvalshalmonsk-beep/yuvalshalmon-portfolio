@@ -411,3 +411,37 @@
   addEventListener('keydown', (e) => { if (e.key === 'Escape') setOpen(false); });
   matchMedia('(min-width: 761px)').addEventListener('change', (e) => { if (e.matches) setOpen(false); });
 })();
+
+// Post Nature plant profile (phone): tap a point on the screen to open its card below, with a line to the exact spot
+(function () {
+  const pp = document.querySelector('.pp');
+  if (!pp) return;
+  const dots = [...pp.querySelectorAll('.ppm-dot')];
+  const card = pp.querySelector('.ppm-card'), line = pp.querySelector('.ppm-line polyline'), screen = pp.querySelector('.pp__screen');
+  if (!dots.length || !card || !screen) return;
+  const target = document.createElement('i'); target.className = 'ppm-target'; screen.appendChild(target);
+  let cur = 0;
+  const draw = () => {
+    const d = dots[cur]; if (!d || getComputedStyle(card).display === 'none') return;
+    const P = pp.getBoundingClientRect(), S = screen.getBoundingClientRect(), C = card.getBoundingClientRect();
+    const u = +d.dataset.u, v = +d.dataset.v, left = d.classList.contains('ppm-dot--l');
+    const tx = S.left - P.left + u * S.width, ty = S.top - P.top + v * S.height;
+    const ex = left ? S.left - P.left - 18 : S.right - P.left + 18;
+    const cy = C.top - P.top + C.height / 2, cx = left ? C.left - P.left : C.right - P.left;
+    line.setAttribute('points', `${tx},${ty} ${ex},${ty} ${ex},${cy} ${cx},${cy}`);
+    target.style.left = u * 100 + '%'; target.style.top = v * 100 + '%';
+  };
+  const pick = (i) => {
+    cur = i;
+    dots.forEach((d, k) => d.classList.toggle('is-on', k === i));
+    const d = dots[i], img = card.querySelector('img');
+    img.src = '/assets/pn/svg/' + d.dataset.svg + '.svg'; img.alt = d.getAttribute('aria-label');
+    img.style.width = 'calc(' + d.dataset.w + ' * var(--m))';
+    card.querySelector('p').textContent = d.dataset.d;
+    pp.classList.remove('ppm-on'); void pp.offsetWidth;
+    requestAnimationFrame(() => { draw(); pp.classList.add('ppm-on'); });
+  };
+  dots.forEach((d, i) => d.addEventListener('click', () => pick(i)));
+  addEventListener('resize', draw);
+  new IntersectionObserver(([e], o) => { if (e.isIntersecting) { pick(0); o.disconnect(); } }, { threshold: .3 }).observe(screen);
+})();

@@ -359,6 +359,34 @@ def pcrop(name,tile_box,crop,alt='',vids=()):
     st=f'position:absolute;left:{-(cx-tx)/cw*100:.4f}%;top:{-(cy-ty)/ch*100:.4f}%;width:{tw/cw*100:.4f}%;height:{th/ch*100:.4f}%'
     inner=f'<img class="tile" src="/assets/pn/{name}.webp" alt="{alt}" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;border-radius:0">'+''.join(pvid(n,tile_box,vb) for n,vb in vids)
     return f'<div class="stack clip pcrop" style="aspect-ratio:{cw}/{ch}"><div style="{st}">{inner}</div></div>'
+def flow_m():
+    """Phone: the Custom Hybridization user flow rebuilt as one vertical column (same content as the Figma diagram)."""
+    A='<i class="fl-a"></i>'
+    def node(n,t): return f'<div class="fl-node"><b>{n}</b> {t}</div>'
+    def pill(t,c=''): return f'<span class="fl-pill {c}">{t}</span>'
+    def step(n,t,note,q,act,warn,nxt):
+        return (f'<div class="fl-step">{node(n,t)}<p class="fl-note">{note}</p>{A}<div class="fl-q">{q}</div>{A}'
+                f'<div class="fl-yn"><div class="fl-yes">{pill("Yes, continue")}</div><div class="fl-no">{pill("No, finish")}<span class="fl-skip">to 07 Final hybrid</span></div></div>'
+                f'<div class="fl-branch">{A}<div class="fl-box">{act}</div>{A}<div class="fl-warn"><span>Warning</span>{warn}</div>{A}'
+                f'<div class="fl-row">{pill("Continue")}<span class="fl-next">Next: {nxt}</span></div></div></div>')
+    return ('<div class="flow-m">'
+      '<p class="flow-m__cap"><i>Diagram Caption</i> – Custom Hybridization User Flow</p>'
+      '<h4 class="fl-h">01 / Choose the parent varieties</h4>'
+      f'{node("01","Opening screen")}{A}<div class="fl-row fl-row--c">{pill("Start")}</div>{A}'
+      f'{node("02","Variety catalog")}{A}<div class="fl-box">Select exactly two varieties</div>{A}<div class="fl-row fl-row--c">{pill("Continue")}</div>{A}'
+      '<div class="fl-box fl-box--dash">Generate initial hybrid</div><p class="fl-note fl-note--c">The two selected varieties form the starting hybrid.</p>'
+      '<h4 class="fl-h">02 / Shape the hybrid</h4>'
+      + step('03','Aesthetics','Preview the initial hybrid.','Give the hybrid a more refined, striking appearance?','Apply aesthetic changes','Natural plant mechanisms are disrupted.','04 / Functionality')
+      + step('04','Functionality','Preview the hybrid with changes so far.','Add smart capabilities and advanced functions?','Add advanced functions','Genetic changes prevent natural pollination.','05 / Uniqueness')
+      + step('05','Uniqueness','Preview the hybrid with changes so far.','Make the variety more distinctive and give it unusual traits?','Add distinctive traits','The result is an engineered organism rather than a natural plant.','06 / Final fusion')
+      + step('06','Final fusion','Preview the hybrid with changes so far.','Combine all the traits into one final version?','Merge the selected traits','The final hybrid is fully artificial and human-designed.','07 / Final hybrid')
+      + '<p class="fl-note fl-note--c fl-note--dash">“No, finish” ends the enhancement sequence with the current hybrid.</p>'
+      '<h4 class="fl-h">03 / Name it and take it with you</h4>'
+      f'{node("07","Final hybrid")}<p class="fl-text">Review the result of the choices made. No additional trait is required to finish.</p>{A}'
+      f'{node("08","Name the variety")}{A}<div class="fl-box">Enter a custom name</div>{A}<div class="fl-row fl-row--c">{pill("Continue")}</div>{A}'
+      f'{node("09","Hybrid profile + QR code")}<p class="fl-text">View the profile, interventions and impact. Scan the code to open it on your phone.</p>{A}'
+      '<div class="fl-row fl-row--c"><span class="fl-box fl-box--sm">Scan QR code</span></div>'
+      '</div>')
 def gap(px): return f' style="margin-top:calc({px} * var(--u))"'
 
 
@@ -398,6 +426,15 @@ def _pp_scaled():
             ny=304+73*PP_K+10; pts=[pts[0],(ax+33*(ny-pts[0][1])/56.0*0+ (ny-pts[0][1])*19.6/33.3,pts[0][1]),(ax,ny)]
         out.append(((nx,ny,W2,H2),svg,ss,desc,pts))
     return out
+def _pp_hotspots():
+    """Phone: tap points on the profile screen; each opens its callout card below with a line to the spot."""
+    out=''
+    for i,((x,y,w,h),svg,ss,desc,pts) in enumerate(PP_CALLOUTS):
+        u,v=(pts[0][0]-524)/393,(pts[0][1]-185)/648
+        side='l' if x<524 else 'r'
+        out+=(f'<button class="ppm-dot ppm-dot--{side}" type="button" data-i="{i}" data-u="{u:.4f}" data-v="{v:.4f}" data-svg="{svg}" data-w="{ss[0]}" data-d="{html.escape(desc)}" '
+              f'style="top:{v*100:.3f}%" aria-label="{TITLES[i]}"><span></span></button>')
+    return out
 def plant_profile():
     W=1440
     cards=''
@@ -409,8 +446,10 @@ def plant_profile():
             f'<div class="pp__intro"><h3>{svgimg("pp-title",221,40,"Plant Profile")}</h3>'
             f'<p>Each profile brings together the plant’s identity, history, visual transformation and stage-specific information in a single view.</p></div>'
             f'<svg class="pp__lines" viewBox="0 0 {W} {PP_H}" preserveAspectRatio="none" aria-hidden="true">{groups}</svg>'
-            f'<video class="pp__video" style="left:{pct(524,W)};top:{pct(185,PP_H)};width:{pct(393,W)};height:{pct(648,PP_H)}" src="/assets/video/postnature/sunflower.mp4" muted loop playsinline autoplay preload="metadata" aria-label="Sunflower plant profile, moving through its stages"></video>'
-            f'{cards}</div>'
+            f'<div class="pp__screen" style="left:{pct(524,W)};top:{pct(185,PP_H)};width:{pct(393,W)};height:{pct(648,PP_H)}">'
+            f'<video class="pp__video" src="/assets/video/postnature/sunflower.mp4" muted loop playsinline autoplay preload="metadata" aria-label="Sunflower plant profile, moving through its stages"></video>'
+            f'{_pp_hotspots()}</div>'
+            f'{cards}<div class="ppm-card" aria-live="polite"><img alt=""><p></p></div><svg class="ppm-line" aria-hidden="true"><polyline points=""/></svg></div>'
             f'<div class="pp__stages pan" data-pan>{pimg("s7b",1394,604,"The seven stages of the sunflower, from 2600 BCE to two speculative futures")}</div><p class="pan-hint">Swipe to explore</p>')
 
 # ---- 10 plants carousel (placeholders until the ten videos arrive)
@@ -518,7 +557,8 @@ pn=f'''
 <section class="row row--2 reveal"{gap(100)}>{ptile('s9a',(24,11263,684,1014),'Hybridization kiosk in use',[('comp-1',(24,11203,684,1216))])}{ptile('s9b',(732,11263,684,1014),'Hybrid plant animation',[('kling',(732,11254,686,1032))])}</section>
 <section class="row row--full reveal"{gap(24)}><div class="sb-mhead"><h3>The Hybridization Flow</h3><p>Follow a visitor through the kiosk, from choosing two varieties to taking their hybrid home</p></div><div class="stack clip sb" data-sb>{pimg('s10',1440,675,'Hybridization kiosk')}{pvid('interface-2',(0,12301,1440,675),(561,12373,315,549))}{storyboard()}</div></section>
 <section class="row row--full reveal"{gap(100)}>{phead('h5','05 UX Process','Designing the Decision Flow',132,'<p>The central UX challenge was to turn a complex decision system into a clear, intuitive experience without losing its critical dimension. The flow was divided into short, optional stages where visitors can preview each modification and decide whether to continue or finalize their hybrid. This structure gives visitors control over the process while gradually revealing the consequences of their choices.</p>')}</section>
-<section class="row row--full reveal row--pan"{gap(100)}><div class="pan" data-pan>{ptile('s11',(0,13447,1440,1150),'Custom hybridization user flow diagram')}</div><p class="pan-hint">Swipe to explore</p></section>
+<section class="row row--full reveal m-only">{flow_m()}</section>
+<section class="row row--full reveal row--pan d-only"{gap(100)}><div class="pan" data-pan>{ptile('s11',(0,13447,1440,1150),'Custom hybridization user flow diagram')}</div><p class="pan-hint">Swipe to explore</p></section>
 <section class="row row--full reveal"{gap(100)}>{phead('h6','05 Research & Process','From Research to System',143,'<p>Extensive botanical, historical, and scientific research formed the foundation of Post Nature, organized through research maps and a structured content database. This foundation informed the interactive experiences and guided a broad process of AI-assisted visual exploration, art direction, and image curation, shaping the visual evolution of each plant.</p>')}</section>
 <section class="row row--full reveal"{gap(100)}><h3 class="pn-cap pn-cap--research">{svgimg('cap-research',159,23,'Research Mapping')}</h3></section>
 <section class="row row--inset reveal"{gap(14)}>{ptile('s12',(24,15137,1392,761),'Research mind map',[('mind-map',(24,15137,1392,761))])}</section>
