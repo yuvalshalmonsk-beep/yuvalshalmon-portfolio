@@ -88,7 +88,7 @@ h1, h2, h3 { margin: 0; font-weight: inherit; }
   background: linear-gradient(180deg, #fffdf7 50%, #ffeaf2 69.471%, #ffc3de 86.426%, #ffb0b5 100%);
 }
 .hero__its {
-  position: absolute; left: calc(571 * var(--u)); top: calc(119 * var(--u));
+  position: absolute; left: calc(577.86 * var(--u)); top: calc(119 * var(--u)); /* centred on 720 (Figma had it 7px left) */
   width: calc(284.29 * var(--u)); height: auto;
 }
 /* The six flattened "Shalmon" lettering styles from the Figma "fonts" component.
@@ -100,7 +100,7 @@ h1, h2, h3 { margin: 0; font-weight: inherit; }
 .hero__name img { position: absolute; left: 0; top: 0; width: 100%; height: auto; max-width: none; visibility: hidden; }
 .hero__name img.is-on { visibility: visible; }
 .hero__time {
-  position: absolute; left: calc(508 * var(--u)); top: calc(499 * var(--u));
+  position: absolute; left: calc(514.93 * var(--u)); top: calc(499 * var(--u)); /* centred on 720 */
   width: calc(410.15 * var(--u)); height: auto;
 }
 .hero__intro {
@@ -716,9 +716,9 @@ html.gate .gate-screen { display: flex; flex-direction: column; justify-content:
   .hero { height: calc(785 * var(--m)); padding: 0; }
   .hero__card { inset: auto; left: 0; right: 0; top: calc(12 * var(--m)); height: calc(776 * var(--m)); border-radius: calc(6.5 * var(--m)); background: linear-gradient(180deg, #fffdf7 0%, #ffeaf2 38.9%, #ffc3de 72.9%, #ffb0b5 100%); }
   .hero__its, .hero__name, .hero__time { margin-top: 0; }
-  .hero__its { left: calc(129.4 * var(--m)); top: calc(210 * var(--m)); width: calc(125.2 * var(--m)); }
+  .hero__its { left: calc(132.4 * var(--m)); top: calc(210 * var(--m)); width: calc(125.2 * var(--m)); }
   .hero__name { left: calc(3 * var(--m)); top: calc(246.1 * var(--m)); width: calc(384 * var(--m)); height: calc(108.3 * var(--m)); }
-  .hero__time { left: calc(101.6 * var(--m)); top: calc(377.3 * var(--m)); width: calc(180.6 * var(--m)); }
+  .hero__time { left: calc(104.7 * var(--m)); top: calc(377.3 * var(--m)); width: calc(180.6 * var(--m)); }
   .hero__meta { position: static; display: block; padding: 0; }
   .hero__portfolio { position: absolute; left: 0; right: 0; top: calc(98 * var(--m)); text-align: center; font-size: calc(23.6 * var(--m)); color: var(--brown); }
   .hero__portfolio .serif-i { font-size: calc(26.8 * var(--m)); }
@@ -1076,3 +1076,21 @@ html.gate .gate-screen { display: flex; flex-direction: column; justify-content:
   .nav--glass.is-compact .nav__left { box-shadow: inset 1px 0 0 rgba(255,255,255,.55), inset 0 1px 0 rgba(255,255,255,.7), inset 0 -1px 0 rgba(255,255,255,.55), 0 8px 18px -10px rgba(40,30,25,.18); }
   .nav--glass.is-compact .talk { box-shadow: inset -1px 0 0 rgba(255,255,255,.55), inset 0 1px 0 rgba(255,255,255,.7), inset 0 -1px 0 rgba(255,255,255,.55), 0 8px 18px -10px rgba(40,30,25,.18); }
 }
+/* glass menu v3: the segments take the Figma pill shape (pill-sm / pill-md), overlapping -4px like the original menu */
+@media (min-width: 761px) {
+  .nav--glass { --k: .9515; }
+  .nav--glass .nav__left { gap: 0; }
+  .nav--glass .nav__home, .nav--glass .pill, .nav--glass .talk > span {
+    height: calc(31.53px * var(--k)); padding: 1px 0 0; border-radius: 0; box-shadow: none;
+    -webkit-mask: url(../assets/svg/pill-sm.svg) center / 100% 100% no-repeat; mask: url(../assets/svg/pill-sm.svg) center / 100% 100% no-repeat;
+  }
+  .nav--glass .nav__home, .nav--glass .pill { width: calc(71.16px * var(--k)); }
+  .nav--glass .pill--md { width: calc(122.18px * var(--k)); -webkit-mask-image: url(../assets/svg/pill-md.svg); mask-image: url(../assets/svg/pill-md.svg); }
+  .nav--glass .talk > span { width: calc(116.18px * var(--k)); -webkit-mask-image: url(../assets/svg/pill-md.svg); mask-image: url(../assets/svg/pill-md.svg); }
+  .nav--glass .nav__left > * + * { margin-left: calc(-4px * var(--k)); }
+  .nav--glass.is-compact .nav__left { padding-right: 0; }
+  .nav--glass.is-compact .talk { margin-left: calc(-4px * var(--k)); }
+  .nav--glass .pill:hover, .nav--glass .talk:hover > span { background: #fff; }
+}
+
+@media (min-width: 761px) { .nav--glass { padding-left: 20px; padding-right: 20px; } }
