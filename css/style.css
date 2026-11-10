@@ -1118,3 +1118,13 @@ html.gate .gate-screen { display: flex; flex-direction: column; justify-content:
   .nav:not(.nav--glass) { zoom: calc(var(--z, 1) * .92); max-width: calc(1440px / .92); padding-left: calc(16px / .92); padding-right: calc(24px / .92); }
 }
 @media (min-width: 761px) { .nav:not(.nav--glass) .talk > span { position: relative; top: -1px; } }
+
+/* Menu hover v2: nothing moves or tilts — the pill just deepens a touch, the home blob turns gently */
+.nav .pill, .nav .pill:nth-child(3) { transition: filter .25s ease; }
+.nav .pill:hover, .nav .pill:nth-child(3):hover { transform: none; filter: brightness(.95) saturate(1.25); }
+.nav .pill:active { transform: none; filter: brightness(.9) saturate(1.3); }
+.nav .nav__home:hover { transform: rotate(-6deg); }
+.nav .talk:hover, .nav .talk:hover > span { transform: none; }
+.nav .talk:hover::after { opacity: 1; }
+.nav .talk:hover { color: var(--brown); }
+@media (prefers-reduced-motion: reduce) { .nav .nav__home:hover { transform: none; } }
