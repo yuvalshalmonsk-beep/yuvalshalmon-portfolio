@@ -86,7 +86,8 @@
   const left = nav.querySelector('.nav__left');
   const talk = nav.querySelector('.talk');
   if (!left || !talk) return;
-  const OVERLAP = 4; // same -4px overlap as between every pill in the Figma
+  const ov = parseFloat(getComputedStyle(nav).getPropertyValue('--nav-overlap'));
+  const OVERLAP = isNaN(ov) ? 4 : ov; // same -4px overlap as between every pill in the Figma (glass menu: 0)
   const TOP = 80;    // always spread out near the very top
   const NUDGE = 6;   // ignore tiny scroll jitters
   let compact = false, lastY = scrollY, ticking = false;

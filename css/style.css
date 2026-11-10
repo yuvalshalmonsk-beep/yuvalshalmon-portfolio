@@ -1042,3 +1042,37 @@ html.gate .gate-screen { display: flex; flex-direction: column; justify-content:
 }
 /* plant profile callouts: same 11px inset on both sides */
 .pp-card p { width: auto !important; right: calc(11 * var(--u)); }
+
+/* ---- TRIAL: glass menu (home page only, desktop). Remove 'index.html' from GLASS_NAV in build.py to go back. */
+@media (min-width: 761px) {
+  .nav--glass { --nav-overlap: 0; --g-pad: 5px; --g-r: 17px; --s-r: 12px; --s-h: 40px; }
+  .nav--glass .nav__left, .nav--glass .talk {
+    gap: var(--g-pad); padding: var(--g-pad); border-radius: var(--g-r);
+    background: rgba(226, 224, 222, .42);
+    -webkit-backdrop-filter: blur(16px) saturate(1.5); backdrop-filter: blur(16px) saturate(1.5);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.55), inset 0 1px 0 rgba(255,255,255,.7), 0 6px 22px rgba(40,30,25,.08);
+    transition: transform .7s cubic-bezier(.65,0,.25,1), border-radius .5s ease;
+  }
+  .nav--glass .nav__home, .nav--glass .pill, .nav--glass .talk > span {
+    width: auto; height: var(--s-h); margin: 0; padding: 1px 18px 0; border-radius: var(--s-r);
+    display: inline-flex; align-items: center; justify-content: center;
+    background: #fff; color: var(--brown); font-size: 14px;
+    box-shadow: 0 1px 2px rgba(40,30,25,.06);
+    transition: transform .3s cubic-bezier(.34,1.56,.64,1), background-color .25s ease;
+  }
+  .nav--glass .pill + .pill { margin-left: 0; }
+  .nav--glass .nav__home { background: var(--brown); color: var(--cream); }
+  .nav--glass .talk { width: auto; height: auto; }
+  .nav--glass .talk::before, .nav--glass .talk::after { display: none; }
+  .nav--glass .nav__home:hover, .nav--glass .pill:hover, .nav--glass .talk:hover > span { transform: translateY(-1px); }
+  .nav--glass .pill:hover, .nav--glass .talk:hover > span { background: #fff6f6; }
+  .nav--glass .nav__home:hover { transform: translateY(-1px); }
+  .nav--glass .talk:hover { transform: none; }
+  /* gathered: one capsule — the two halves meet with the same 5px gap as between segments */
+  .nav--glass.is-compact .nav__left { border-radius: var(--g-r) 0 0 var(--g-r); }
+  .nav--glass.is-compact .talk { border-radius: 0 var(--g-r) var(--g-r) 0; padding-left: 0; }
+}
+@media (min-width: 761px) {
+  .nav--glass.is-compact .nav__left { box-shadow: inset 1px 0 0 rgba(255,255,255,.55), inset 0 1px 0 rgba(255,255,255,.7), inset 0 -1px 0 rgba(255,255,255,.55), 0 8px 18px -10px rgba(40,30,25,.18); }
+  .nav--glass.is-compact .talk { box-shadow: inset -1px 0 0 rgba(255,255,255,.55), inset 0 1px 0 rgba(255,255,255,.7), inset 0 -1px 0 rgba(255,255,255,.55), 0 8px 18px -10px rgba(40,30,25,.18); }
+}
