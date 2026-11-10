@@ -1020,3 +1020,11 @@ html.gate .gate-screen { display: flex; flex-direction: column; justify-content:
   .case--cut .row--crop { padding: 0; margin: 0 0 var(--gap) !important; }
   .case--cut .row--crop .tile--flat { border-radius: 0; }
 }
+
+/* Panorays: the info block sits on the hero's purple hill, like Figma */
+.case-info--panorays { background: #CDC8FB; }
+.case-info--panorays.reveal { opacity: 1; transform: none; }
+.case-info--panorays { padding-bottom: calc(124 * var(--u)) !important; margin-bottom: calc(24 * var(--u)); }
+@media (max-width: 760px) {
+  .case-info--panorays { padding-bottom: calc(28 * var(--m)) !important; margin-bottom: var(--gap); }
+}
