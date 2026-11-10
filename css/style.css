@@ -1087,10 +1087,20 @@ html.gate .gate-screen { display: flex; flex-direction: column; justify-content:
   .nav--glass .nav__home, .nav--glass .pill { width: calc(71.16px * var(--k)); }
   .nav--glass .pill--md { width: calc(122.18px * var(--k)); -webkit-mask-image: url(../assets/svg/pill-md.svg); mask-image: url(../assets/svg/pill-md.svg); }
   .nav--glass .talk > span { width: calc(116.18px * var(--k)); -webkit-mask-image: url(../assets/svg/pill-md.svg); mask-image: url(../assets/svg/pill-md.svg); }
-  .nav--glass .nav__left > * + * { margin-left: calc(-4px * var(--k)); }
+  .nav--glass .nav__left > * + *, .nav--glass .nav__left .pill + .pill { margin-left: calc(-4px * var(--k)); }
   .nav--glass.is-compact .nav__left { padding-right: 0; }
   .nav--glass.is-compact .talk { margin-left: calc(-4px * var(--k)); }
   .nav--glass .pill:hover, .nav--glass .talk:hover > span { background: #fff; }
 }
 
 @media (min-width: 761px) { .nav--glass { padding-left: 20px; padding-right: 20px; } }
+/* glass menu v4: segments at the SVGs' native widths, spaced like the Figma frame (256.51 hug = 67.58 + 67.58 + 118.6 + 2 × 1.375) so every tip meets */
+@media (min-width: 761px) {
+  .nav--glass .nav__home, .nav--glass .nav__left .pill { width: calc(67.58px * var(--k)); }
+  .nav--glass .nav__left .pill--md { width: calc(118.6px * var(--k)); }
+  .nav--glass .talk > span { width: calc(113px * var(--k)); -webkit-mask-image: url(../assets/svg/pill-talk-pink.svg); mask-image: url(../assets/svg/pill-talk-pink.svg); }
+  .nav--glass .nav__left > * + *, .nav--glass .nav__left .pill + .pill, .nav--glass.is-compact .talk { margin-left: calc(1.375px * var(--k)); }
+}
+@media (min-width: 761px) {
+  .nav--glass.is-compact .talk { margin-left: 0; padding-left: calc(1.375px * var(--k)); }
+}
