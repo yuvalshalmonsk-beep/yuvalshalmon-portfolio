@@ -1028,3 +1028,14 @@ html.gate .gate-screen { display: flex; flex-direction: column; justify-content:
 @media (max-width: 760px) {
   .case-info--panorays { padding-bottom: calc(28 * var(--m)) !important; margin-bottom: var(--gap); }
 }
+
+/* Site link in the case meta row (Act, Kanopy, Panorays) */
+.case-meta > div:nth-child(2):not(:last-child) { width: 77px; flex: none; }
+.case-site { color: inherit; text-decoration: none; background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; transition: background-size .35s ease; }
+.case-site:hover, .case-site:focus-visible { background-size: 100% 1px; }
+@media (min-width: 761px) {
+  .case-meta:has(.case-site) { gap: 60px; }
+  .case-meta:has(.case-site) > div:first-child { width: 300px; flex: none; }
+}
+/* plant profile callouts: same 11px inset on both sides */
+.pp-card p { width: auto !important; right: calc(11 * var(--u)); }
