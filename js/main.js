@@ -86,6 +86,7 @@
   const left = nav.querySelector('.nav__left');
   const talk = nav.querySelector('.talk');
   if (!left || !talk) return;
+  if (nav.classList.contains('nav--glass')) return; // glass menu: always one centred capsule, no gather
   const ov = parseFloat(getComputedStyle(nav).getPropertyValue('--nav-overlap'));
   const OVERLAP = isNaN(ov) ? 4 : ov; // same -4px overlap as between every pill in the Figma (glass menu: 0)
   const TOP = 80;    // always spread out near the very top
