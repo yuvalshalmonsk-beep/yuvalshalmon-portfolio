@@ -321,12 +321,12 @@ sections=f'''
   </div>
 </section>
 
-<section class="row row--full reveal">{overlay(img('s1-laptop',1440,747,'Act website on a laptop resting on a classical pedestal'),'sofi-3','s1-video-poster',(0,1440,1440,747),(438,1601,580,338))}</section>
+<section class="row row--full reveal row--trim">{overlay(img('s1-laptop',1440,747,'Act website on a laptop resting on a classical pedestal'),'sofi-3','s1-video-poster',(0,1440,1440,747),(438,1601,580,338))}</section>
 <section class="row row--2 reveal">{frames('logo',8,684,1064,350,'Act logo in eight materials')}{img('s2-b',684,1064,'Classical statue wrapped in pixel-art vines')}</section>
 <section class="row row--full reveal">{img('s3',1440,974,'Act banners hanging between columns of a classical building')}</section>
 <section class="row row--grid4 reveal">{img('s4-a',682,855,'Pixel icon set')}<div class="col">{img('s4-b',682,416,'Pixel arrow buttons')}{frames('line',3,682,416,800,'Line illustrations of floating temples')}</div></section>
 <section class="row row--inset reveal">{video('mokhan-2','s5-video-poster',1392,662)}</section>
-<section class="row row--2 reveal">{overlay(img('s6-a',684,855,'Statues holding a tablet showing the Act website'),'screen-recording-a','s6-a-video-poster',(24,5863,684,855),(257,6171,257,185))}{overlay(img('s6-b',684,855,'How Act secures your cloud — product page'),'screen-recording-b','s6-b-video-poster',(732,5863,684,855),(766,6150,617,277),top='s6-b-clouds')}</section>
+<section class="row row--2 reveal row--swap-m">{overlay(img('s6-a',684,855,'Statues holding a tablet showing the Act website'),'screen-recording-a','s6-a-video-poster',(24,5863,684,855),(257,6171,257,185))}{overlay(img('s6-b',684,855,'How Act secures your cloud — product page'),'screen-recording-b','s6-b-video-poster',(732,5863,684,855),(766,6150,617,277),top='s6-b-clouds')}</section>
 <section class="row row--2 reveal">{img('s7-a',684,855,'Act cloud map illustration on a laptop')}{img('s7-b',684,855,'Great empires don’t burn easily — matchbox poster')}</section>
 <section class="row row--full relief-row reveal">{carousel()}</section>
 <section class="row row--type reveal">{img('s9-a',507,622,'PP Mori typeface specimen')}{img('s9-b',855,622,'Act colour palette')}</section>
@@ -353,6 +353,12 @@ def pvid(name,tile_box,vid_box):
 def ptile(name,box,alt='',vids=(),cls='tile'):
     x,y,w,h=box
     return f'<div class="stack clip">{pimg(name,w,h,alt,cls=cls)}'+''.join(pvid(n,box,vb) for n,vb in vids)+'</div>'
+def pcrop(name,tile_box,crop,alt='',vids=()):
+    """Phone-only crop of a tile (with its videos) so one part of a wide composition can fill the screen."""
+    tx,ty,tw,th=tile_box; cx,cy,cw,ch=crop
+    st=f'position:absolute;left:{-(cx-tx)/cw*100:.4f}%;top:{-(cy-ty)/ch*100:.4f}%;width:{tw/cw*100:.4f}%;height:{th/ch*100:.4f}%'
+    inner=f'<img class="tile" src="/assets/pn/{name}.webp" alt="{alt}" loading="lazy" decoding="async" style="position:absolute;inset:0;width:100%;height:100%;border-radius:0">'+''.join(pvid(n,tile_box,vb) for n,vb in vids)
+    return f'<div class="stack clip pcrop" style="aspect-ratio:{cw}/{ch}"><div style="{st}">{inner}</div></div>'
 def gap(px): return f' style="margin-top:calc({px} * var(--u))"'
 
 
@@ -405,7 +411,7 @@ def plant_profile():
             f'<svg class="pp__lines" viewBox="0 0 {W} {PP_H}" preserveAspectRatio="none" aria-hidden="true">{groups}</svg>'
             f'<video class="pp__video" style="left:{pct(524,W)};top:{pct(185,PP_H)};width:{pct(393,W)};height:{pct(648,PP_H)}" src="/assets/video/postnature/sunflower.mp4" muted loop playsinline autoplay preload="metadata" aria-label="Sunflower plant profile, moving through its stages"></video>'
             f'{cards}</div>'
-            f'<div class="pp__stages">{pimg("s7b",1394,604,"The seven stages of the sunflower, from 2600 BCE to two speculative futures")}</div>')
+            f'<div class="pp__stages pan" data-pan>{pimg("s7b",1394,604,"The seven stages of the sunflower, from 2600 BCE to two speculative futures")}</div><p class="pan-hint">Swipe to explore</p>')
 
 # ---- 10 plants carousel (placeholders until the ten videos arrive)
 PLANTS=[('sunflower','Sunflower'),('rose','Rose'),('iris','Iris'),('orchid','Orchid'),('tulip','Tulip'),
@@ -464,12 +470,14 @@ def storyboard():
     for i,(tt,tx,(x,y,w,h),pts,a,z) in enumerate(SB):
         P=[(px+DX,py+DY) for px,py in pts]
         g+=f'<g data-c="{i}"><polyline class="lead" pathLength="1" points="{" ".join(f"{px},{py}" for px,py in P)}"/><circle class="lead-dot" cx="{P[0][0]}" cy="{P[0][1]}" r="2.5"/></g>'
-        cards+=(f'<div class="sb-card" data-c="{i}" data-from="{a}" data-to="{z}" style="left:{pct(x+DX,W)};top:{pct(y+DY,H)};width:{pct(w,W)};min-height:{pct(h,H)}">'
+        U0,V0=(P[0][0]-561)/315,(P[0][1]-72)/549   # where the leader lands, as a fraction of the screen video (phone version)
+        cards+=(f'<div class="sb-card" data-c="{i}" data-from="{a}" data-to="{z}" data-u="{U0:.4f}" data-v="{V0:.4f}" style="left:{pct(x+DX,W)};top:{pct(y+DY,H)};width:{pct(w,W)};min-height:{pct(h,H)}">'
                 f'<p class="sb-card__t">{tt}</p><p class="sb-card__d">{tx}</p></div>')
     head=(f'<div class="sb-head" style="left:{pct(57,W)};top:{pct(52.5,H)};width:{pct(400,W)}">'
           f'<h3><img src="/assets/pn/svg/sb-title.svg" width="323" height="24" alt="The Hybridization Flow" style="width:{U(323)}"></h3>'
           f'<p>Follow a visitor through the kiosk, from choosing two varieties to taking their hybrid home</p></div>')
-    return head+f'<svg class="sb__lines" viewBox="0 0 {W} {H}" preserveAspectRatio="none" aria-hidden="true">{g}</svg>{cards}'
+    mob='<div class="sbm" aria-hidden="true"><div class="sbm__cap"><p class="sbm__t"></p><p class="sbm__d"></p></div><svg class="sbm__line"><polyline points=""/><circle r="3" cx="-9" cy="-9"/></svg></div>'
+    return mob+head+f'<svg class="sb__lines" viewBox="0 0 {W} {H}" preserveAspectRatio="none" aria-hidden="true">{g}</svg>{cards}'
 
 p=P['post-nature']
 tags=''.join(f'<span class="tag">{t}</span>' for t in p['tags'])
@@ -497,7 +505,9 @@ pn=f'''
 <section class="row row--full reveal"{gap(100)}>{phead('h1','01 Overview','What is nature when we redesign it?',143,'<p>For millennia, humans have cultivated and selectively bred plants to meet practical and aesthetic needs. Today, genetic engineering and DNA editing make that intervention more precise than ever.</p><p><b>Post-Nature</b> questions the logic behind these changes: what we choose to preserve, improve, or eliminate - and what we might lose when nature is redesigned around human desires.</p>')}</section>
 <section class="row row--2 reveal"{gap(100)}>{ptile('s2a',(24,2534,684,855),'Archive photo of a gardener with lilacs')}{ptile('s2b',(732,2534,684,855),'Archive photo of a gardener tending pots')}</section>
 <section class="row row--full reveal"{gap(100)}>{phead('h2','01 Overview','Inside the Exhibition',132,'<p>The exhibition was designed as a pristine, almost clinical environment, balancing delicate beauty with a subtle sense of unease. At its entrance, four transparent acrylic panels display speculative plant specimens as objects of observation and control. Two light-toned archive screens trace the history of human intervention in plants and imagine where it might lead in the future, while a contrasting dark kiosk invites visitors to create a hybrid of their own.</p>')}</section>
-<section class="row row--full reveal"{gap(100)}>{ptile('s3',(0,3860,1440,777),'Archive screens and the hybridization kiosk',[('sahlav',(88,3912,304,501)),('iris',(530,3912,304,501)),('hituch',(1030,3911,328,582))])}</section>
+<section class="row row--full reveal d-only"{gap(100)}>{ptile('s3',(0,3860,1440,777),'Archive screens and the hybridization kiosk',[('sahlav',(88,3912,304,501)),('iris',(530,3912,304,501)),('hituch',(1030,3911,328,582))])}</section>
+<section class="row row--full reveal m-only">{pcrop('s3',(0,3860,1440,777),(960,3868,470,760),'The hybridization kiosk',[('hituch',(1030,3911,328,582))])}</section>
+<section class="row row--full reveal m-only">{pcrop('s3',(0,3860,1440,777),(40,3876,840,690),'The two archive screens',[('sahlav',(88,3912,304,501)),('iris',(530,3912,304,501))])}</section>
 <section class="row row--full reveal"{gap(24)}>{ptile('s4',(0,4661,1440,763),'Four acrylic panels with speculative plants')}</section>
 <section class="row row--full reveal"{gap(100)}>{phead('h3','03 Interface one','The Hybrid Archive',132,'<p>The archive traces ten plant varieties across seven stages of transformation. The first five are grounded in historical and scientific research, while the final two imagine possible futures. Moving through each plant’s timeline reveals changes in its appearance and characteristics, making the cumulative effects of human intervention visible.</p>')}</section>
 <section class="row row--2 reveal"{gap(100)}>{ptile('s5a',(24,5895,684,1014),'Hybrid Archive interface',[('interface-1',(-16,5895,765,1014))])}{ptile('s5b',(731,5895,684,1014),'Delphinium animation in the archive',[('delphinium',(731,5612,685,1354))])}</section>
@@ -508,9 +518,9 @@ pn=f'''
 <section class="row row--2 reveal"{gap(100)}>{ptile('s9a',(24,11263,684,1014),'Hybridization kiosk in use',[('comp-1',(24,11203,684,1216))])}{ptile('s9b',(732,11263,684,1014),'Hybrid plant animation',[('kling',(732,11254,686,1032))])}</section>
 <section class="row row--full reveal"{gap(24)}><div class="sb-mhead"><h3>The Hybridization Flow</h3><p>Follow a visitor through the kiosk, from choosing two varieties to taking their hybrid home</p></div><div class="stack clip sb" data-sb>{pimg('s10',1440,675,'Hybridization kiosk')}{pvid('interface-2',(0,12301,1440,675),(561,12373,315,549))}{storyboard()}</div></section>
 <section class="row row--full reveal"{gap(100)}>{phead('h5','05 UX Process','Designing the Decision Flow',132,'<p>The central UX challenge was to turn a complex decision system into a clear, intuitive experience without losing its critical dimension. The flow was divided into short, optional stages where visitors can preview each modification and decide whether to continue or finalize their hybrid. This structure gives visitors control over the process while gradually revealing the consequences of their choices.</p>')}</section>
-<section class="row row--full reveal"{gap(100)}>{ptile('s11',(0,13447,1440,1150),'Custom hybridization user flow diagram')}</section>
+<section class="row row--full reveal row--pan"{gap(100)}><div class="pan" data-pan>{ptile('s11',(0,13447,1440,1150),'Custom hybridization user flow diagram')}</div><p class="pan-hint">Swipe to explore</p></section>
 <section class="row row--full reveal"{gap(100)}>{phead('h6','05 Research & Process','From Research to System',143,'<p>Extensive botanical, historical, and scientific research formed the foundation of Post Nature, organized through research maps and a structured content database. This foundation informed the interactive experiences and guided a broad process of AI-assisted visual exploration, art direction, and image curation, shaping the visual evolution of each plant.</p>')}</section>
-<section class="row row--full reveal"{gap(100)}><h3 class="pn-cap">{svgimg('cap-research',159,23,'Research Mapping')}</h3></section>
+<section class="row row--full reveal"{gap(100)}><h3 class="pn-cap pn-cap--research">{svgimg('cap-research',159,23,'Research Mapping')}</h3></section>
 <section class="row row--inset reveal"{gap(14)}>{ptile('s12',(24,15137,1392,761),'Research mind map',[('mind-map',(24,15137,1392,761))])}</section>
 <section class="row row--full reveal"{gap(100)}><h3 class="pn-cap" style="padding-left:calc(48 * var(--u))">{svgimg('cap-content',376,23,'Content Architecture and Visual Development')}</h3></section>
 <section class="row row--inset reveal"{gap(14)}>{ptile('s14',(24,16067,1392,616),'Interface screen recording',[('screen-recording',(24,16067,1392,616))])}</section>

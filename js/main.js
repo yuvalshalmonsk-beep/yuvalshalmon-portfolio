@@ -192,14 +192,34 @@
     const groups = [...sb.querySelectorAll('.sb__lines g')];
     if (!video || !cards.length) return;
     const spans = cards.map((c) => [+c.dataset.from, +c.dataset.to]);
+    // phone: one caption above the screen, with a line running down beside it to the exact spot
+    const mob = sb.querySelector('.sbm');
+    let shown = -2;
+    const phone = (i) => {
+      shown = i;
+      const cap = mob.querySelector('.sbm__cap'), line = mob.querySelector('polyline'), dot = mob.querySelector('circle');
+      if (i < 0 || getComputedStyle(mob).display === 'none') { mob.classList.remove('is-on'); return; }
+      mob.querySelector('.sbm__t').textContent = cards[i].querySelector('.sb-card__t').textContent;
+      mob.querySelector('.sbm__d').textContent = cards[i].querySelector('.sb-card__d').textContent;
+      const box = sb.getBoundingClientRect(), v = video.getBoundingClientRect(), c = cap.getBoundingClientRect();
+      const tx = v.left - box.left + (+cards[i].dataset.u) * v.width, ty = v.top - box.top + (+cards[i].dataset.v) * v.height;
+      const x0 = c.left - box.left + 6, y0 = c.bottom - box.top + 6, xr = v.left - box.left - 14;
+      line.setAttribute('points', `${x0},${y0} ${x0},${y0 + 10} ${xr},${y0 + 10} ${xr},${ty} ${tx},${ty}`);
+      dot.setAttribute('cx', tx); dot.setAttribute('cy', ty);
+      mob.classList.remove('is-on'); void mob.offsetWidth; mob.classList.add('is-on');
+    };
+    addEventListener('resize', () => { shown = -2; });
     let raf = null;
     const tick = () => {
       const t = video.currentTime;
+      let last = -1;
       spans.forEach(([a, z], i) => {
         const on = t >= a && t < z;
         cards[i].classList.toggle('is-on', on);
         groups[i].classList.toggle('is-on', on);
+        if (on) last = i;
       });
+      if (mob && last !== shown) phone(last);
       raf = video.paused ? null : requestAnimationFrame(tick);
     };
     const run = () => { if (!raf) raf = requestAnimationFrame(tick); };
