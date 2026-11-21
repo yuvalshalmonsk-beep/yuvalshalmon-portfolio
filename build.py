@@ -604,8 +604,11 @@ INFO={'kanopy':'A bold cybersecurity brand built for the wild world of no-code a
       'panorays':'Panorays helps businesses understand and manage cybersecurity risks across their third-party relationships. Built around the idea “Connections that just click,” the brand identity and website translate a complex security world into a bright, approachable experience through expressive illustrations, vibrant gradients, and Pano, the brand’s character.'}
 SITES={'kanopy':'<div><p class="case-label">Site</p><p><a class="case-site" href="https://kanopysecurity.com/" target="_blank" rel="noopener">kanopysecurity.com</a></p></div>','panorays':'<div><p class="case-label">Site</p><p><a class="case-site" href="https://panorays.com/" target="_blank" rel="noopener">panorays.com</a></p></div>'}
 KV=lambda f,c,v: (c,v,f)
-TILES={'kanopy':[[26,1110,682,855],[732,1110,682,855],[26,1989,1390,813],[26,3877,682,855],[732,3877,682,855],[26,4756,1390,615],[26,6507,682,855],[732,6507,682,855],[26,7386,682,855],[732,7386,682,855],[26,8265,682,855],[732,8265,682,855],[26,10211,1390,613],[26,10848,682,855],[732,10848,682,855],[26,11727,682,855],[732,11727,682,855]],
-       'panorays':[[24,1110,684,855],[732,1110,684,855],[24,3093,684,855],[732,3093,684,855],[24,5071,684,855],[732,5071,684,855],[24,5950,1392,855],[24,7666,684,683],[732,7666,684,683],[26,10754,682,855],[732,10754,684,855],[26,11633,1390,763]]}
+TILES={'kanopy':[[26,1110,682,855],[732,1110,682,855],[26,1989,1390,813],[105,3168,1245,641,'art'],[26,3877,682,855],[732,3877,682,855],[26,4756,1390,615],[26,6507,682,855],[732,6507,682,855],[26,7386,682,855],[732,7386,682,855],[26,8265,682,855],[732,8265,682,855],[26,10211,1390,613],[26,10848,682,855],[732,10848,682,855],[26,11727,682,855],[732,11727,682,855]],
+       # 5th value: 'bleed' = edge to edge on desktop, 'flat' = composite board; both square-cornered on desktop, rounded tiles on the phone
+       'panorays':[[24,1110,684,855],[732,1110,684,855],[0,1988,1440,1082,'bleed'],[24,3093,684,855],[732,3093,684,855],[0,3972,1440,1076,'bleed'],[24,5071,684,855],[732,5071,684,855],
+                   [24,5950,684,855],[732,5950,684,855],[25,6828,1392,814],[24,7666,684,683],[732,7666,684,683],[24,8372,686,739],[732,8372,685,739],[22,9134,1396,763,'flat'],[0,9918,1440,813,'bleed'],
+                   [26,10754,682,855],[732,10754,684,855],[26,11633,1390,763]]}
 def tile_page(slug,full,sc,start,end,heads,vids):
     """Rebuild a flattened page as real rows: rounded tiles (cropped one by one) + full-width crops for everything else."""
     os.makedirs(f"{ROOT}/assets/{slug}/tiles",exist_ok=True)
@@ -616,7 +619,7 @@ def tile_page(slug,full,sc,start,end,heads,vids):
     def crop(y0,y1):
         nonlocal n; n+=1; name=f"f{n:02d}"
         full.crop((0,round(y0*sc),full.width,round(y1*sc))).save(f"{ROOT}/assets/{slug}/tiles/{name}.webp",quality=86)
-        return f'<section class="row row--full row--crop"><img class="tile tile--flat" src="/assets/{slug}/tiles/{name}.webp" width="1440" height="{y1-y0}" alt="" loading="lazy" decoding="async"></section>\n'
+        return f'<section class="row row--full row--crop" data-y="{y0}"><img class="tile tile--flat" src="/assets/{slug}/tiles/{name}.webp" width="1440" height="{y1-y0}" alt="" loading="lazy" decoding="async"></section>\n'
     for y,kind,data in items:
         gap=y-pos
         if gap>40: out+=crop(pos,y); gap=0
@@ -625,18 +628,74 @@ def tile_page(slug,full,sc,start,end,heads,vids):
             y1,h=data; out+=h.replace('<section class="row row--full reveal">',f'<section class="row row--full reveal"{mt}>',1); pos=y1; continue
         r=data; x0=r[0][0]; xr=1440-(r[-1][0]+r[-1][2]); g=(r[1][0]-(r[0][0]+r[0][2])) if len(r)>1 else 0
         cells=''
-        for (x,ty,w,h) in r:
+        for (x,ty,w,h,*fl) in r:
             n+=1; name=f"t{n:02d}"
             full.crop((round(x*sc),round(ty*sc),round((x+w)*sc),round((ty+h)*sc))).save(f"{ROOT}/assets/{slug}/tiles/{name}.webp",quality=86)
             ov=''
             for (cx,cy,cw,ch),(vx,vy,vw,vh),f in vids:
                 if abs(cx-x)<4 and abs(cy-ty)<4:
                     ov+=(f'<video class="overlay" src="/assets/video/{slug}/{f}.mp4" style="left:{(vx-x)/w*100:.3f}%;top:{(vy-ty)/h*100:.3f}%;width:{vw/w*100:.3f}%;height:{vh/h*100:.3f}%" muted loop playsinline autoplay preload="metadata"></video>')
-            cells+=f'<div class="stack clip" style="flex:{w} 1 0"><img class="tile" src="/assets/{slug}/tiles/{name}.webp" width="{w}" height="{h}" alt="" loading="lazy" decoding="async">{ov}</div>'
+            fc=f' is-{fl[0]}' if fl else ''
+            cells+=f'<div class="stack clip{fc}" style="flex:{w} 1 0"><img class="tile" src="/assets/{slug}/tiles/{name}.webp" width="{w}" height="{h}" alt="" loading="lazy" decoding="async">{ov}</div>'
         cls='row--2' if len(r)>1 else 'row--inset'
-        out+=f'<section class="row {cls} row--tiles reveal" style="margin-top:calc({max(gap,0)} * var(--u));--pl:calc({x0} * var(--u));--pr:calc({xr} * var(--u));--g:calc({g} * var(--u))">{cells}</section>\n'
+        out+=f'<section class="row {cls} row--tiles reveal" data-y="{y}" style="margin-top:calc({max(gap,0)} * var(--u));--pl:calc({x0} * var(--u));--pr:calc({xr} * var(--u));--g:calc({g} * var(--u))">{cells}</section>\n'
         pos=max(tl[1]+tl[3] for tl in r)
     if end-pos>4: out+=crop(pos,end)
+    return out
+
+
+import re as _re_m
+def _swap_m(body,y,mob):
+    """Hide the section that starts at Figma y on the phone and put its phone version right after it."""
+    i=body.index(f'data-y="{y}"'); a=body.rindex('<section class="',0,i); b=body.index('</section>',i)+len('</section>')
+    sec=body[a:b].replace('<section class="','<section class="d-only ',1)
+    return body[:a]+sec+'\n'+mob+body[b:]
+def kanopy_mobile(full,sc):
+    """Phone-only versions: line-art jungle (two clusters, large, bleeding off the edges), the dashboard as live UI, the three posts stacked."""
+    os.makedirs(f"{ROOT}/assets/kanopy/m",exist_ok=True)
+    out={}
+    # line art: left + right clusters from the Figma band 5766-6507, background turned to page cream, overlaps multiplied
+    from PIL import ImageChops
+    band=full.crop((0,round(5766*sc),full.width,round(6507*sc))).convert('RGB')
+    bg=band.getpixel((round(720*sc),round(370*sc))); cream=(254,253,247)
+    # paper -> pure white (levels), so the two clusters can overlap by multiplying; then tint the whole thing page cream
+    lv=lambda v: 255 if v>=236 else round(v*255/236)
+    band=band.convert('L').point(lv).convert('RGB')
+    S=0.48*3/sc   # desktop px -> phone css px (0.48) at 3x
+    L=band.crop((0,0,round(530*sc),band.height)); R=band.crop((round(975*sc),0,band.width,band.height))
+    L=L.resize((round(L.width*S),round(L.height*S)),_Im.LANCZOS); R=R.resize((round(R.width*S),round(R.height*S)),_Im.LANCZOS)
+    W=390*3; H=max(L.height,R.height)
+    a=_Im.new('RGB',(W,H),(255,255,255)); a.paste(L,(-18*3,0))
+    b=_Im.new('RGB',(W,H),(255,255,255)); b.paste(R,(W-R.width+12*3,0))
+    canvas=ImageChops.multiply(ImageChops.multiply(a,b),_Im.new('RGB',(W,H),cream))
+    canvas.save(f"{ROOT}/assets/kanopy/m/lineart.webp",quality=84)
+    out[5766]=(f'<section class="row row--full m-only k-lineart"><img src="/assets/kanopy/m/lineart.webp" width="390" height="{round(H/3)}" alt="Hand-drawn jungle line art" loading="lazy" decoding="async"></section>')
+    # dashboard: live UI, readable on the phone
+    t=full.crop((round(1090/2*sc),round((9120*2+232)/2*sc),round(1790/2*sc),round((9120*2+336)/2*sc)))
+    t.save(f"{ROOT}/assets/kanopy/m/jungle-awaits.webp",quality=90)
+    def pill(k,t): return f'<span class="kd-pill kd-pill--{k}">{t}</span>'
+    def table(rows):
+        return ('<div class="kd-card kd-table"><div class="kd-tr kd-th"><span>Severity</span><span>Insight name</span><span># Insights</span></div>'
+                + ''.join(f'<div class="kd-tr">{pill(k,lv)}<span>{n}</span><span>{c}</span></div>' for k,lv,n,c in rows)+'</div>')
+    bars=[('Critical',0,'0'),('High',9,'3,990'),('Medium',100,'40,440'),('Low',10,'4,269'),('Info',0,'14')]
+    out[9120]=('<section class="row row--full m-only"><div class="kd">'
+      f'<img class="kd-title" src="/assets/kanopy/m/jungle-awaits.webp" width="{t.width//2}" height="{t.height//2}" alt="The Jungle Awaits">'
+      '<p class="kd-lead">Welcome to the Wild Frontier of Business Apps. When visibility drops, risky workflows grow fast. We don’t just hack at vines, we hand you the machete and the map to secure your ecosystem.</p>'
+      '<div class="kd-tabs"><span class="is-on">Overview</span><span>Insights</span></div>'
+      + table([('high','High','Possible HTML injection in an application','24,290'),('high','High','Hard coded secret',''),('high','High','Secure implicit connections',''),('high','High','Possible OData injection in an application',''),('high','High','Possible prompt injection in an application','')])
+      + table([('med','Medium','Orphan application','10,394'),('med','Medium','Personal report is shared with the whole organization','4,841'),('med','Medium','Application is shared with many users',''),('med','Medium','Unused Power BI workspace',''),('low','Low','Dependency old version','')])
+      + '<div class="kd-pair">'
+        '<div class="kd-card kd-total"><p class="kd-k"><i>💡</i>Total Insights</p><p class="kd-big">48,713 <em>↗ +140</em></p><p class="kd-k kd-k--s">Insights by severity</p>'
+        + ''.join(f'<div class="kd-bar"><span>{n}</span><b><i style="width:{w}%" class="kd-b--{n.lower()}"></i></b><span>{c}</span></div>' for n,w,c in bars) + '</div>'
+        '<div class="kd-col">'
+          '<div class="kd-card kd-gb"><p class="kd-big">552.2 GB</p><svg viewBox="0 0 100 34" aria-hidden="true"><path d="M0 32 L18 24 L30 6 L42 20 L56 14 L70 12 L100 12" fill="none" stroke="#e2563f" stroke-width="1.4"/><path d="M0 32 L18 24 L30 6 L42 20 L56 14 L70 12 L100 12 V34 H0Z" fill="rgba(226,86,63,.10)"/></svg><p class="kd-k kd-k--s">Data processed · Sep 21–27 2025</p></div>'
+          '<div class="kd-card kd-assets"><p class="kd-k">Assets by platform</p><div class="kd-donut"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="14" fill="none" stroke="#5fd3b0" stroke-width="5"/><circle cx="18" cy="18" r="14" fill="none" stroke="#a28bf2" stroke-width="5" stroke-dasharray="30.8 57.2" transform="rotate(-90 18 18)"/></svg>'
+          '<ul><li><i style="background:#a28bf2"></i>Power Platform <b>35%</b></li><li><i style="background:#5fd3b0"></i>Power BI <b>64%</b></li><li><i style="background:#f5c26b"></i>UiPath <b>1%</b></li></ul></div></div>'
+        '</div></div>'
+      '</div></section>')
+    # the three posts: stacked (Figma mobile frame)
+    ig=_Im.open(f"{ROOT}/assets/work/kanopy-m/ig-posts.png"); ig.save(f"{ROOT}/assets/kanopy/m/ig-posts.webp",quality=86)
+    out[10211]=(f'<section class="row row--full m-only"><div class="stack clip"><img class="tile" src="/assets/kanopy/m/ig-posts.webp" width="376" height="{round(ig.height*376/ig.width)}" alt="Three Kanopy social posts" loading="lazy" decoding="async"></div></section>')
     return out
 
 for slug,num,role,year in [('kanopy','04','Lead Designer - Brand Identity &amp; Web<br>Created at Guts Agency','2025'),('panorays','02','Brand &amp; Digital Designer<br>Created at Guts Agency','2026')]:
@@ -646,7 +705,10 @@ for slug,num,role,year in [('kanopy','04','Lead Designer - Brand Identity &amp; 
     if slug=='kanopy':
         h1='<section class="row row--full reveal">'+phead('k1','01 The Brand Idea','We don’t fight the jungle. We understand it.',198,'<p>The jungle became a metaphor for the world Kanopy operates in constantly growing, full of possibility, and increasingly difficult to see through. Rather than framing innovation as the threat, the brand positions Kanopy as the guide that brings visibility, clarity, and order to the wild.</p>',d='kanopy',h=325)+'</section>\n'
         h2='<section class="row row--full reveal">'+phead('k2','02 Crafted by Hand','Built for the AI era. Crafted entirely by hand.',143,'<p>I developed the visual world from scratch, creating the logo, illustration system, plants, animals, objects, and icons by hand. This human-made approach gave the brand a distinctive character in a category increasingly filled with generic, synthetic visuals.</p>',d='kanopy',h=295)+'</section>\n'
+        KM=kanopy_mobile(full,sc)
         body+=tile_page(slug,full,sc,1110,13209,{2826:(3151,h1),5471:(5766,h2)},[KV('shirt',(732,10848,682,855),(732,10848,682,855)),KV('jungle-logo',(26,1110,682,855),(19,1110,688.7,855)),KV('apps',(732,1110,682,855),(732,1110,684,855)),KV('laptop-wide',(26,1989,1390,813),(18,1989,1406,813)),KV('tools',(26,8265,682,855),(24,8265,684,855)),KV('bottom',(26,11727,682,855),(23.5,11727.3,684,855))])
+        for y,mob in KM.items():
+            body=_swap_m(body,y,mob)
     else:
         body+=tile_page(slug,full,sc,1110,12441,{},[])
     page=head(f"{p['name']} — Yuval Shalmon", INFO[slug][:155])+nav('works')+'<div class="page">\n<main class="case case--pn case--cut">'+body+'</main>\n'+'<div class="endzone">'+CTA_HOME+footer()+'</div>'+'</div>\n'+END
