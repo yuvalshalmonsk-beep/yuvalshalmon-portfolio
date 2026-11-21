@@ -29,7 +29,7 @@
 try{if(/[?&]preview=off/.test(q))localStorage.removeItem(k);else if(/[?&]preview/.test(q))localStorage.setItem(k,'1');p=localStorage.getItem(k)==='1';}catch(e){p=/[?&]preview(?!=off)/.test(q);}
 if(!p&&matchMedia('(max-width: 760px)').matches)d.classList.add('gate');})();
 </script>
-<link rel="stylesheet" href="/css/style.css?v=3376d6ca">
+<link rel="stylesheet" href="/css/style.css?v=211479ee">
 </head>
 <body>
 <div class="gate-screen" role="dialog" aria-label="Mobile version coming soon">
@@ -43,7 +43,6 @@ if(!p&&matchMedia('(max-width: 760px)').matches)d.classList.add('gate');})();
     <a class="nav__home" href="/">home</a>
     <a class="pill" href="/#works" aria-current="page">works</a>
     <a class="pill" href="/about/">about</a>
-    <a class="pill pill--md" href="#playground">Playground</a>
   </div>
   <a class="talk" href="#contact"><span>Let’s talk</span></a>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mnav"><span class="menu-btn__open">menu</span><span class="menu-btn__close">close</span></button>
@@ -53,7 +52,6 @@ if(!p&&matchMedia('(max-width: 760px)').matches)d.classList.add('gate');})();
     <li><a class="mnav__pill" href="/">home</a></li>
     <li><a class="mnav__pill" href="/#works" aria-current="page">works</a></li>
     <li><a class="mnav__pill" href="/about/">about</a></li>
-    <li><a class="mnav__pill" href="#playground">playground</a></li>
     <li><a class="mnav__pill mnav__pill--talk" href="#contact">let’s talk</a></li>
   </ul>
   <div class="mnav__foot">
@@ -109,7 +107,7 @@ if(!p&&matchMedia('(max-width: 760px)').matches)d.classList.add('gate');})();
 </main>
 <div class="endzone"><section class="cta reveal">
   <h2 class="cta__title"><span class="sr-only">Fortune favors the bold.</span><img src="/assets/svg/cta-bold.svg?v=590a223b" width="820" height="407" alt=""></h2>
-  <a class="cta__btn" href="#contact">Let’s talk</a>
+  <a class="cta__btn" href="mailto:yuvalshalmon.sk@gmail.com">Let’s talk</a>
 </section>
 <footer class="footer" id="contact">
   <div class="footer__brand">

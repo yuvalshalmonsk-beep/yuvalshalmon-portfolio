@@ -61,6 +61,16 @@ if(!p&&matchMedia('(max-width: 760px)').matches)d.classList.add('gate');}})();
 </div>
 '''
 
+BANNER_HTML='''<section class="banner-wrap" id="playground">
+  <div class="banner reveal">
+    <img class="banner__bg" src="/assets/img/banner.webp" width="1241" height="203" alt="" loading="lazy">
+    <p class="banner__text">A little bit of <span class="serif-i">everything</span></p>
+    <a class="banner__btn" data-magnetic href="#playground">go to Playground</a>
+  </div>
+</section>
+'''
+PLAYGROUND=False  # the Playground page isn't ready: menu item + home banner off until it is (set True to bring them back)
+BANNER=BANNER_HTML if PLAYGROUND else ''
 def nav(active=''):
     cur=lambda k: ' aria-current="page"' if k==active else ''
     return f'''<nav class="nav" aria-label="Main">
@@ -68,8 +78,7 @@ def nav(active=''):
     <a class="nav__home" href="/"{cur('home')}>home</a>
     <a class="pill" href="/#works"{cur('works')}>works</a>
     <a class="pill" href="/about/"{cur('about')}>about</a>
-    <a class="pill pill--md" href="#playground">Playground</a>
-  </div>
+{'    <a class="pill pill--md" href="#playground">Playground</a>'+chr(10) if PLAYGROUND else ''}  </div>
   <a class="talk" href="#contact"><span>Let’s talk</span></a>
   <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mnav"><span class="menu-btn__open">menu</span><span class="menu-btn__close">close</span></button>
 </nav>
@@ -78,8 +87,7 @@ def nav(active=''):
     <li><a class="mnav__pill" href="/"{cur('home')}>home</a></li>
     <li><a class="mnav__pill" href="/#works"{cur('works')}>works</a></li>
     <li><a class="mnav__pill" href="/about/"{cur('about')}>about</a></li>
-    <li><a class="mnav__pill" href="#playground">playground</a></li>
-    <li><a class="mnav__pill mnav__pill--talk" href="#contact">let’s talk</a></li>
+{'    <li><a class="mnav__pill" href="#playground">playground</a></li>'+chr(10) if PLAYGROUND else ''}    <li><a class="mnav__pill mnav__pill--talk" href="#contact">let’s talk</a></li>
   </ul>
   <div class="mnav__foot">
     <img src="/assets/svg/footer-name.svg" width="216" height="32" alt="Yuval Shalmon">
@@ -90,7 +98,7 @@ def nav(active=''):
 
 CTA_HOME='''<section class="cta reveal">
   <h2 class="cta__title"><span class="sr-only">Fortune favors the bold.</span><img src="/assets/svg/cta-bold.svg" width="820" height="407" alt=""></h2>
-  <a class="cta__btn" href="#contact">Let’s talk</a>
+  <a class="cta__btn" href="mailto:yuvalshalmon.sk@gmail.com">Let’s talk</a>
 </section>
 '''
 
@@ -177,13 +185,7 @@ index=head('Yuval Shalmon — Portfolio', DESC)+nav('home')+'<div class=\"page\"
   </div>
 </section>
 
-<section class="banner-wrap" id="playground">
-  <div class="banner reveal">
-    <img class="banner__bg" src="/assets/img/banner.webp" width="1241" height="203" alt="" loading="lazy">
-    <p class="banner__text">A little bit of <span class="serif-i">everything</span></p>
-    <a class="banner__btn" data-magnetic href="#playground">go to Playground</a>
-  </div>
-</section>
+{BANNER}
 
 '''+'<div class="endzone">'+CTA_HOME+footer()+'</div>'+'</div>\n'+END
 
@@ -223,7 +225,7 @@ about=head('About — Yuval Shalmon', 'About Yuval Shalmon, a brand and digital 
   <img class="about-cta__bg" src="/assets/img/about-bg.webp" alt="" loading="lazy">
   <div class="cta reveal">
     <h2 class="cta__title"><span class="sr-only">Fortune favors the bold.</span><img src="/assets/svg/cta-bold.svg" width="820" height="407" alt=""></h2>
-    <a class="cta__btn cta__btn--dark" href="#contact">Let’s talk</a>
+    <a class="cta__btn cta__btn--dark" href="mailto:yuvalshalmon.sk@gmail.com">Let’s talk</a>
   </div>
 '''+footer()+'</section>\n</div>\n'+END
 
@@ -604,7 +606,7 @@ INFO={'kanopy':'A bold cybersecurity brand built for the wild world of no-code a
       'panorays':'Panorays helps businesses understand and manage cybersecurity risks across their third-party relationships. Built around the idea “Connections that just click,” the brand identity and website translate a complex security world into a bright, approachable experience through expressive illustrations, vibrant gradients, and Pano, the brand’s character.'}
 SITES={'kanopy':'<div><p class="case-label">Site</p><p><a class="case-site" href="https://kanopysecurity.com/" target="_blank" rel="noopener">kanopysecurity.com</a></p></div>','panorays':'<div><p class="case-label">Site</p><p><a class="case-site" href="https://panorays.com/" target="_blank" rel="noopener">panorays.com</a></p></div>'}
 KV=lambda f,c,v: (c,v,f)
-TILES={'kanopy':[[26,1110,682,855],[732,1110,682,855],[26,1989,1390,813],[105,3168,1245,641,'art'],[26,3877,682,855],[732,3877,682,855],[26,4756,1390,615],[26,6507,682,855],[732,6507,682,855],[26,7386,682,855],[732,7386,682,855],[26,8265,682,855],[732,8265,682,855],[26,10211,1390,613],[26,10848,682,855],[732,10848,682,855],[26,11727,682,855],[732,11727,682,855]],
+TILES={'kanopy':[[26,1110,682,855],[732,1110,682,855],[26,1989,1390,813],[105,3168,1245,641,'art'],[26,3877,682,855],[732,3877,682,855],[26,4756,1390,615],[26,6507,682,855],[732,6507,682,855],[26,7386,682,855],[732,7386,682,855],[26,8265,682,855],[732,8265,682,855],[26,10211,1390,613],[26,10848,682,855],[732,10848,682,855],[26,11727,682,855],[732,11727,682,855],[222,12664,986,444,'art']],
        # 5th value: 'bleed' = edge to edge on desktop, 'flat' = composite board; both square-cornered on desktop, rounded tiles on the phone
        'panorays':[[24,1110,684,855],[732,1110,684,855],[0,1988,1440,1082,'bleed'],[24,3093,684,855],[732,3093,684,855],[0,3972,1440,1076,'bleed'],[24,5071,684,855],[732,5071,684,855],
                    [24,5950,684,855],[732,5950,684,855],[25,6828,1392,814],[24,7666,684,683],[732,7666,684,683],[24,8372,686,739],[732,8372,685,739],[22,9134,1396,763,'flat'],[0,9918,1440,813,'bleed'],
@@ -670,29 +672,10 @@ def kanopy_mobile(full,sc):
     canvas=ImageChops.multiply(ImageChops.multiply(a,b),_Im.new('RGB',(W,H),cream))
     canvas.save(f"{ROOT}/assets/kanopy/m/lineart.webp",quality=84)
     out[5766]=(f'<section class="row row--full m-only k-lineart"><img src="/assets/kanopy/m/lineart.webp" width="390" height="{round(H/3)}" alt="Hand-drawn jungle line art" loading="lazy" decoding="async"></section>')
-    # dashboard: live UI, readable on the phone
-    t=full.crop((round(1090/2*sc),round((9120*2+232)/2*sc),round(1790/2*sc),round((9120*2+336)/2*sc)))
-    t.save(f"{ROOT}/assets/kanopy/m/jungle-awaits.webp",quality=90)
-    def pill(k,t): return f'<span class="kd-pill kd-pill--{k}">{t}</span>'
-    def table(rows):
-        return ('<div class="kd-card kd-table"><div class="kd-tr kd-th"><span>Severity</span><span>Insight name</span><span># Insights</span></div>'
-                + ''.join(f'<div class="kd-tr">{pill(k,lv)}<span>{n}</span><span>{c}</span></div>' for k,lv,n,c in rows)+'</div>')
-    bars=[('Critical',0,'0'),('High',9,'3,990'),('Medium',100,'40,440'),('Low',10,'4,269'),('Info',0,'14')]
-    out[9120]=('<section class="row row--full m-only"><div class="kd">'
-      f'<img class="kd-title" src="/assets/kanopy/m/jungle-awaits.webp" width="{t.width//2}" height="{t.height//2}" alt="The Jungle Awaits">'
-      '<p class="kd-lead">Welcome to the Wild Frontier of Business Apps. When visibility drops, risky workflows grow fast. We don’t just hack at vines, we hand you the machete and the map to secure your ecosystem.</p>'
-      '<div class="kd-tabs"><span class="is-on">Overview</span><span>Insights</span></div>'
-      + table([('high','High','Possible HTML injection in an application','24,290'),('high','High','Hard coded secret',''),('high','High','Secure implicit connections',''),('high','High','Possible OData injection in an application',''),('high','High','Possible prompt injection in an application','')])
-      + table([('med','Medium','Orphan application','10,394'),('med','Medium','Personal report is shared with the whole organization','4,841'),('med','Medium','Application is shared with many users',''),('med','Medium','Unused Power BI workspace',''),('low','Low','Dependency old version','')])
-      + '<div class="kd-pair">'
-        '<div class="kd-card kd-total"><p class="kd-k"><i>💡</i>Total Insights</p><p class="kd-big">48,713 <em>↗ +140</em></p><p class="kd-k kd-k--s">Insights by severity</p>'
-        + ''.join(f'<div class="kd-bar"><span>{n}</span><b><i style="width:{w}%" class="kd-b--{n.lower()}"></i></b><span>{c}</span></div>' for n,w,c in bars) + '</div>'
-        '<div class="kd-col">'
-          '<div class="kd-card kd-gb"><p class="kd-big">552.2 GB</p><svg viewBox="0 0 100 34" aria-hidden="true"><path d="M0 32 L18 24 L30 6 L42 20 L56 14 L70 12 L100 12" fill="none" stroke="#e2563f" stroke-width="1.4"/><path d="M0 32 L18 24 L30 6 L42 20 L56 14 L70 12 L100 12 V34 H0Z" fill="rgba(226,86,63,.10)"/></svg><p class="kd-k kd-k--s">Data processed · Sep 21–27 2025</p></div>'
-          '<div class="kd-card kd-assets"><p class="kd-k">Assets by platform</p><div class="kd-donut"><svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="14" fill="none" stroke="#5fd3b0" stroke-width="5"/><circle cx="18" cy="18" r="14" fill="none" stroke="#a28bf2" stroke-width="5" stroke-dasharray="30.8 57.2" transform="rotate(-90 18 18)"/></svg>'
-          '<ul><li><i style="background:#a28bf2"></i>Power Platform <b>35%</b></li><li><i style="background:#5fd3b0"></i>Power BI <b>64%</b></li><li><i style="background:#f5c26b"></i>UiPath <b>1%</b></li></ul></div></div>'
-        '</div></div>'
-      '</div></section>')
+    # dashboard: on the phone the pink dashboard tile just above carries the UI (like the Guts mobile page), so this band is hidden
+    out[9120]=''
+    # thin rule + blank band around "Protecting the Good Jungle": hidden on the phone
+    out[12582]=''; out[13108]=''
     # the three posts: stacked (Figma mobile frame)
     ig=_Im.open(f"{ROOT}/assets/work/kanopy-m/ig-posts.png"); ig.save(f"{ROOT}/assets/kanopy/m/ig-posts.webp",quality=86)
     out[10211]=(f'<section class="row row--full m-only"><div class="stack clip"><img class="tile" src="/assets/kanopy/m/ig-posts.webp" width="376" height="{round(ig.height*376/ig.width)}" alt="Three Kanopy social posts" loading="lazy" decoding="async"></div></section>')
@@ -711,6 +694,10 @@ for slug,num,role,year in [('kanopy','04','Lead Designer - Brand Identity &amp; 
             body=_swap_m(body,y,mob)
     else:
         body+=tile_page(slug,full,sc,1110,12441,{},[])
+        i=body.index('data-y="1988"'); a=body.rindex('<section class="',0,i); b=body.index('</section>',i)+10
+        sec=body[a:b]; body=body[:a]+sec.replace('<section class="','<section class="d-only ',1)+body[b:]
+        j=body.index('data-y="1110"'); c=body.rindex('<section class="',0,j)
+        body=body[:c]+sec.replace('<section class="','<section class="m-only ',1).replace(' data-y="1988"','')+'\n'+body[c:]
     page=head(f"{p['name']} — Yuval Shalmon", INFO[slug][:155])+nav('works')+'<div class="page">\n<main class="case case--pn case--cut">'+body+'</main>\n'+'<div class="endzone">'+CTA_HOME+footer()+'</div>'+'</div>\n'+END
     open(f"{ROOT}/work/{slug}/index.html",'w').write(page)
 print('kanopy + panorays rebuilt')
