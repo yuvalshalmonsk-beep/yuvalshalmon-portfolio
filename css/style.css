@@ -1361,3 +1361,5 @@ html.gate .gate-screen { display: flex; flex-direction: column; justify-content:
   .case--cut .row--tiles > .stack.is-art { width: calc(100% + 8 * var(--m)) !important; margin: 0 calc(-4 * var(--m)); }
   .case--cut .row--tiles[data-y="12664"] { margin-top: calc(40 * var(--m)) !important; }
 }
+/* Act reliefs on the phone: edge to edge without pushing the page 12px wider than the screen */
+@media (max-width: 760px) { .case .relief-row { margin-left: 0 !important; margin-right: 0 !important; } }
